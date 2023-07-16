@@ -1,0 +1,2146 @@
+---
+title: "International expansion of N&D holdings I"
+author: "Anton Barrera Mora (me@antonio-barrera.cyou)"
+date: "2023-07-15"
+output:
+  github_document:
+    preserve_yaml: true
+  word_document: default
+  html_document:
+    highlight: default
+    number_sections: yes
+    theme: cosmo
+    toc: yes
+    toc_depth: 3
+    includes:
+      in_header: p_brand.html
+  pdf_document:
+    highlight: zenburn
+    toc: yes
+editor_options: 
+  markdown: 
+    wrap: sentence
+bibliography: references.bib
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+options (repos = c(CRAN = "https://cran.rstudio.com/"))
+```
+
+```{r carga de librerias, message=FALSE, warning=FALSE, include=FALSE}
+
+#Carga de librerias en segundo plano
+if(!require('ggplot2')) install.packages('ggplot2'); library('ggplot2')
+if(!require('Rmisc')) install.packages('Rmisc'); library('Rmisc')
+if(!require('dplyr')) install.packages('dplyr'); library('dplyr')
+if(!require('xfun')) install.packages('xfun'); library('xfun')
+if(!require('magrittr')) install.packages('magrittr'); library('magrittr')
+if (!require('factoextra')) install.packages('factoextra'); library('factoextra')
+if(!require('pracma')) install.packages('pracma'); library('pracma')
+if (!require('cluster')) install.packages('cluster'); library(cluster)
+if (!require('dendextend')) install.packages('dendextend'); library(dendextend)
+if (!require('knitr')) install.packages('knitr'); library(knitr)
+if (!require('fpc')) install.packages('fpc'); library(fpc)
+if (!require('dbscan')) install.packages('dbscan'); library(dbscan)
+if (!require('cluster')) install.packages('cluster'); library(cluster)
+if (!require('kableextra')) install.packages('kableExtra'); library(kableExtra)
+if (!require('janitor')) install.packages('janitor'); library(janitor)
+```
+
+# Introduction
+
+We will go through the first 3 phases of the project that will lead to the acquisition of a dataset with which we will tackle the modelling and testing phases in a second part of the project.
+
+# Phase 1. Understanding the business
+
+The general shareholders' meeting of the business holding company 'night&day kabushiki gaisha' (N&D.hol) approved in its last meeting the conduct of a descriptive-projective study.
+This study is expected to encompass different candidate countries - from which one will eventually be selected - as well as an algorithm that allows monitoring the evolution of the various markets where the consortium operates.
+Furthermore, it will be necessary to take into account the different variables that could affect the success of international expansion, consistent with the various parameters and requirements that will be detailed below.
+
+N&D.hol is a group of Japanese companies, a leader in its sector, with a mission to improve the well-being and health of its customers and a commitment to sustainable development.
+The main line of business is the management of wellness facilities for the elderly - such as senior residences - but they are also involved in other areas such as the production and distribution of medical supplies and equipment, construction of healthcare infrastructure, marketing of healthy food products, and research.
+
+The holding has been implementing a corporate social responsibility plan for several years.
+Consequently, it has prioritized alignment with various goals and targets of sustainable development promoted by the UN and other international supranational institutions [@miluska.jara; @measurin].
+Specifically, the corporate social responsibility plan has emphasized various initiatives such as:
+
+\- Reduction of poverty @goal1:
+
+\- Decent work and economic growth @goal8:
+
+\- Consistent with the nature of the business group, good health and social well-being @goal3:
+
+Therefore, the business objective is the selection of a data-driven country for the group to initiate international expansion.
+The key performance indicators would be established as follows:
+
+\- Recovery of the total investment in the chosen country within five years.
+
+\- 12% net profit in the sixth year.
+
+\- Achieve a 15% market share in the country within 3 years.
+
+\- Positive assessment and evolution of N&D.hol's perception as an entity committed to sustainable development goals in the markets where it operates, resulting in a 5% annual improvement in brand image perception through traditional surveys, social media, and other similar channels.
+
+Likewise, the situation analysis leading to the selection of candidate countries should consider the following aspects @hennig2015
+
+-   [Cost-benefit analysis.]{.underline}
+
+The trio of countries must meet a preliminary requirement based on the density of the aging population in the coming years, ensuring a sustained high demand for the types of products and services offered by the holding.
+Additionally, based on the most up-to-date available data, there should be a consistent customer base.
+
+The candidates should be nations that have experienced positive economic growth in recent years in terms of per capita income.
+
+To operate in line with the sustainable development goals outlined in the corporate social responsibility plan, the candidate nations for N&D's international expansion should be countries facing issues such as poverty, inequality, decent work, and economic growth where the company can make a meaningful contribution.
+However, at the same time, the population should have sufficient income levels to generate demand for the products and services offered by the holding.
+
+-   [Availability of resources.]{.underline}
+
+The country or nation should have a skilled workforce - including doctors, nurses, and care staff - to support the operations and services that the holding plans to deploy.
+
+Additionally, there should be a network of medical establishments and facilities that provide at least basic healthcare services.
+
+-   [Risks and contingencies.]{.underline}
+
+The candidates should have the best possible ratio in terms of labor legislation and regulation of private property rights.
+
+Furthermore, they should have the lowest possible ratio of criminal activity.
+
+-   [Project requirements.]{.underline}
+
+The candidate countries or nations should have the best possible balance in the previously highlighted aspects or variables, accompanied by various data analyses that can help justify a data-driven decision.
+
+The project should be scalable to incorporate new variables for analysis in the future.
+
+Moreover, the outcome of this work should result in a predictive-descriptive model with the ability to update with new data over time, which can assist in future needs or objectives for international expansion.
+
+Regarding the goals of the data mining project, the following are considered:
+
+1.  Candidate analysis performed using scientific and data analysis techniques with the established parameters and variables, followed by a ranking and evaluation of the results.
+    The outcome should provide a deliverable with the top 3 candidates for investment.
+
+2.  Predictive analysis on:
+
+-   Economic trends.
+
+-   Evolution of different sustainable development indices.
+
+-   Evolution of various sociocultural aspects considered in the data mining project.
+
+Therefore, as a summary, the expected deliverable is an updatable descriptive-predictive model that meets the present and future analysis needs based on the terms and variables established by the company's board of directors.
+
+Finally, in terms of the project plan:
+
+1.  The project will be structured around the Cross Industry Standard Process for Data Mining (CRISP-DM) model.
+    This model encompasses six sequential phases that form the basis for the data science process.
+
+2.  The "data understanding" (2), "data preparation" (3), "modeling" (3), and "evaluation" (4) phases will be carried out using the R programming language and the RStudio integrated development environment (IDE) with RMarkdown.
+
+3.  Given the nature of this work, the use of other collaborative tools or version control systems is not considered.
+    However, under normal circumstances, tools like Git for version control and facilitating iteration between different project phases until reaching a final product could be employed.
+    Additionally, depending on the team size, collaborative work tools such as Slack or Teams may be required.
+
+4.  Similarly, and in line with the previous point, a detailed plan with a schedule for each phase would be necessary.
+
+Summary of tasks addressed in this phase:
+
+-   1\.
+    Definition of the population: Countries with a population at or above the threshold of senescence, with a positive economic evolution.
+
+-   2\.
+    Data collection: Due to the nature of the required data, primary data is unavailable as it pertains to "state" data not held by the companies.
+    Therefore, we need to collect data from:
+
+    -   Secondary sources: Data collected by other institutions or derived from research studies.
+
+    -   Tertiary sources: Data collected from third parties.
+        These sources do not directly come from the publisher but are reputable sources such as the United Nations (UN), World Health Organization (WHO), etc.
+        These official sources compile data from other official sources, in this case, states or nations.
+
+For this project, the data will originate from third-party sources as described above, which are official data collected by institutions with the social objective of conducting statistical work.
+
+-   3\. Identification of variables: In this phase, we have identified income, population density, age, infrastructure, resources, and population safety as key variables for the target population.
+
+# Phase 2: Understanding the Data
+
+Objective of the phase: Identification, collection, and analysis of datasets that will help achieve the project objectives.
+
+## Introduction:
+
+As established in the previous phase, the data required for this data science project is not held by the stakeholders or the company.
+We must necessarily rely on external sources to collect the data.
+Since the nature of the project involves comparing data from different countries, if it were a specific country, we could gather the data from the government's official website.
+However, in our case, we need worldwide data, so we must necessarily turn to organizations that collect official data from third parties, such as the World Health Organization @dataat for international health aspects, or the United Nations @united for the evolution of various international aspects.
+
+Additionally, there are various companies and organizations that typically collect open data from institutions that, as mentioned earlier, do not directly collect the data but conduct research and work based on them.
+This could be the case with websites like "Statista" ( @statista) or "Dataverse" (@thedata2023), to name a few.
+In data analysis and science, data that has not been collected firsthand or does not come from research or directly published works must be used with the utmost caution.
+Knowing the origin and all aspects related to the dataset is crucial, and tertiary sources of data always pose a risk.
+
+With all this in mind, we have opted for a source that could be considered more than tertiary, even quaternary: the statistics service "Our World in Data" (@ourworl).
+Behind this service is the non-profit organization "Global Change Data Lab" ( @globalc), which collaborates with the University of Oxford within "The Oxford Martin Programme" ( @globald).
+The management team and advisors are composed of prominent figures in academia and teaching.
+"Our World in Data" (OwD) collects data directly from official organizations, conducts various studies, and publishes works of diverse nature based on official data.
+They also provide extensive information, studies, and charts on the progress towards global sustainable development goals ( @measurin ).
+
+From an initial exploration, we have found that almost all of the variables we have identified as relevant for this work are presumably available in the service and openly accessible, except for some complementary datasets.
+
+Therefore, now that the data source has been clarified, we will proceed with the milestones of this phase.
+
+## Collection of initial data.
+
+To work with the variable "Income," specifically the economic levels of different countries, we turn to the dataset "Annual growth of GDP per capita, 1961-2020" @globalc .
+We are interested in the[annual growth of GDP per capita](https://ourworldindata.org/grapher/gdp-per-capita-growth?tab=chart) for the past 10 years.
+[Source: World Development Indicators - World Bank (2022.05.26)]
+
+Loading the dataset and name the table 'income':
+
+```{r renta, echo=TRUE, message=FALSE, warning=FALSE}
+
+# Carga del conjunto de datos relativos a la renta
+path = 'dataset/gdp-per-capita-growth.csv'
+renta <- read.csv(path, row.names =NULL)
+```
+
+```{r renta str, echo=TRUE, message=FALSE, warning=FALSE}
+
+str(renta)
+
+```
+
+We have 10,463 objects and 4 columns.
+
+For the variable "Population," we will work with datasets related to international population growth or decline.
+Therefore, we turn to the dataset "[Population growth and demography](https://ourworldindata.org/world-population-growth)" @roser2013. We are interested in understanding the absolute and relative changes in population and segmenting the data by age groups.
+[Source: United Nations, Department of Economic and Social Affairs, Population Division (2022).
+World Population Prospects 2022, Online Edition.]
+
+We load the dataset and name the table 'population':
+
+```{r poblacion, echo=TRUE, message=FALSE, warning=FALSE}
+
+path= "dataset/population-and-demography.csv"
+poblacion <- read.csv(path, row.names=NULL)
+```
+
+```{r pob_str, echo=TRUE, message=FALSE, warning=FALSE}
+
+str(poblacion)
+```
+
+And as a result, it appears that the required variables for this work are present.
+There are numerous age segments, countries, etc.
+This table will require more attention and work.
+Regarding the variable "Infrastructure," we have identified a suitable dataset called "[Coverage of essential health services](https://sdg-tracker.org/good-health)" @goal3:, which captures the Universal Health Coverage (UHC) index globally.
+It is pertinent to note at this point that we are interested in understanding the infrastructure of each country, as it can be a good starting indicator.
+Constructing new facilities for the elderly without minimum healthcare conditions would be reckless, hence the relevance of this dataset.
+[Source: WHO, Global Health Observatory (2022)]
+
+We verify the dataset and name the table 'infra':
+
+```{r infraestructuras, echo=TRUE, message=FALSE, warning=FALSE}
+
+path= "dataset/universal-health-coverage-index.csv"
+
+infra <- read.csv(path, row.names = NULL)
+```
+
+```{r infra str, echo=TRUE, message=FALSE, warning=FALSE}
+
+str(infra)
+```
+
+And once again, we observe that the attributes we need for the project are present, primarily the UHC indicator.
+
+Considering that the holding does not want to be involved in cases of human exploitation, as a socially responsible entity with values and objectives aligned with the achievement of sustainable development goals, we are interested in security.
+At this point, we will address the variable "Security," primarily focusing on legal security, specifically the degree of compliance with labor legislation.
+For this purpose, we have identified the dataset called "Compliance of labor rights." This dataset incorporates the International Labour Organization (ILO) index, which reflects respect for labor laws, including the rights to strike and association.
+[Source: International Labour Organization (ILO)]
+
+We verify the dataset and rename the table as 'seguridad':
+
+```{r seguridad, echo=TRUE, message=FALSE, warning=FALSE}
+
+path = "dataset/level-of-national-compliance-with-labor-rights.csv"
+
+seguridad <- read.csv(path, row.names = NULL)
+
+```
+
+```{r seguridad str, echo=TRUE, message=FALSE, warning=FALSE}
+
+str(seguridad)
+```
+
+We observe 264 objects and 4 variables, which correspond to our expectations, including the reference index.
+
+Finally, regarding the variable "Recursos" (Resources), we will emphasize human resources with the appropriate training to support the holding's economic and social project as described earlier.
+We are interested in the dataset "Health Worker Density." Health worker density represents the size of qualified health personnel per 1,000 population.
+It is measured based on the density of physicians, surgeons, nurses and midwives, dentists, and pharmaceutical personnel.
+This variable (@goal3:) is highly representative for the analytical objective of the project.
+Furthermore, given the nature of the company, having specialized personnel is crucial.
+
+Verifying the dataset and rename the table as 'recursos':
+
+```{r recursos, echo=TRUE, message=FALSE, warning=FALSE}
+
+path = "dataset/physicians-per-1000-people.csv"
+
+recursos <- read.csv(path, row.names =NULL)
+
+```
+
+```{r recursos str, echo=TRUE, message=FALSE, warning=FALSE}
+
+str(recursos)
+```
+
+We observe that the table is error-free and contains the necessary attributes for this work.
+
+On the other hand, although the variables and collected data seem to cover all the planned needs in the study, we believe it is necessary to implement a section for "complementary data" that can help us enhance the dimensions of analysis, especially for the supervised methodology, to further "feed" the model.
+
+We believe that the variable "seguridad" (security) is not perfectly represented with data on respect for labor rights.
+Therefore, we will complement it with additional necessary data, using the table "Business Confidence Index (BCI)" available on the OECD website ( @services ).
+
+This business confidence indicator provides information on future trends based on opinion surveys about production, orders, and finished product inventories in the industrial sector.
+It can be used to monitor production growth and anticipate turning points in economic activity.
+Figures above 100 suggest an increase in confidence regarding future business outcomes, while figures below 100 indicate pessimism about future results (@leading).
+
+This table provides a powerful indicator that can help improve the perception of overall security in the target country.
+
+Loading the table and rename it as 'comp_seguridad' for "security complements":
+
+```{r comp_seguridad, echo=TRUE, message=FALSE, warning=FALSE}
+
+path= "dataset/DP_LIVE_11052023100328461.csv"
+
+comp_seguridad <- read.csv(path, row.names = NULL)
+```
+
+```{r comp_seguridad str, echo=TRUE, message=FALSE, warning=FALSE}
+
+str(comp_seguridad)
+```
+
+And from the results, we obtain 22,927 objects.
+We observe that we have country codes and BCI values.
+The column names or variables differ from the bulk of the tables, but we can use 'LOCATION' as the primary or foreign key.
+The dates need to be modified.
+
+In the same vein, we want to complement the economic information by including a table that captures public spending in relation to GDP and see the effects it has on the country's long-term economic evolution and indicators.
+
+For this purpose, we will use the table "Government spending in early-industrialized countries grew remarkably during the last century" @ortiz-ospina2016. This table captures the public spending of states with a very extensive time dimension, allowing us to observe how it has evolved in relation to well-being, statistics, and indices - social, economic, etc. [Source: Mauro, P., Romeu, R., Binder, A., & Zaman, A.
+(2015).
+A modern history of fiscal prudence and profligacy.
+Journal of Monetary Economics, 76, 55-70).
+
+Loading the table and rename it as 'comp_renta' for "income complements":
+
+```{r comp_renta, echo=TRUE, message=FALSE, warning=FALSE}
+
+path= "dataset/total-gov-expenditure-gdp-wdi.csv"
+
+comp_renta <- read.csv(path, row.names = NULL)
+```
+
+```{r comp_renta str, echo=TRUE, message=FALSE, warning=FALSE}
+
+str(comp_renta)
+```
+
+We observe 4,039 objects with 4 typical variables, including a unique variable that captures the IMF or reference index.
+The name of the fourth column, as is customary in datasets obtained from the "Our World in Data" web service, has a non-standard format.
+
+We conclude this section by summarizing the dataset with which we will work after aggregating them into a single dataset:
+
+| Variable                      |                          Data                           | Notes                                                                                                |
+|------------------|:-------------------------------:|----------------------|
+| Infrastructure                |          Coverage of essential health services          | From the Universal Health Coverage dataset                                                           |
+| Population                    |            Population growth and demography             | From the GDP per capita growth dataset                                                               |
+| Resources                     | Density of qualified health personnel in the population | From the physicians per 1000 people dataset                                                          |
+| Income                        |                Per capita income levels                 | From the GDP per capita growth dataset                                                               |
+| Security                      |                Respect for labor rights                 | From the level of national compliance with labour rights dataset                                     |
+| Complementary (comp_security) |             Business Confidence Index (BCI)             | From the Business Confidence Index dataset                                                           |
+| Complementary (comp_income)   |                Public expenditure index                 | From the "A modern history of fiscal prudence and profligacy. Journal of Monetary Economics dataset" |
+
+: Summary table of variables and data nature
+
+## Data Description.
+
+In the 'income' table for the Income variable, we observe that we have 10463 instances and 4 variables, which we will describe below:
+
+ENTITY: Refers to the countries for which the reference index (GDP) has been calculated.
+
+CODE: Country code, acts as the primary key.
+
+GDP.per.capita.growth.annual: Corresponds to the numeric value of GDP.
+It represents the Gross Domestic Product (GDP) per capita in constant local currency.
+This is the aspect we aim to study.
+
+YEAR: Corresponds to the temporal dimension.
+
+In the 'population' table for the Population variable, we find 18288 objects and 24 variables.
+
+COUNTRY.NAME: The names of the countries.
+There is no country code that can act as a primary or foreign key.
+
+POPULATION: The total number of individuals in the population.
+
+POPULATION.[...]: Different segmentations of the population based on age groups.
+
+YEAR: The temporal dimension of the data.
+
+In the 'infra' table for the Infrastructure variable, we find 1248 objects and 4 variables, which we will break down below:
+
+ENTITY: Refers to the countries for which the reference index regarding basic health coverage has been calculated.
+
+CODE: Key that identifies the countries.
+
+YEAR: Temporal dimension of the data.
+
+INDICATOR.UHC [...]: Corresponds to the values assigned to the UHC index.
+
+In the 'resources' table for the Resources variable, we find 4686 instances of objects and 4 variables:
+
+ENTITY: Refers to the countries for which the reference index regarding medical personnel per thousand people has been calculated.
+
+CODE: Key that identifies the countries.
+
+YEAR: Temporal dimension of the data.
+
+PHYSICIANS..PER.1000.PEOPLE: Index of medical personnel density per 1000 individuals, calculated using the formula:
+
+(medical_staff / total_population) \* 1000
+
+In the 'security' table for the Security variable, we observe exactly the same attributes described above, with the exception of PHYSICIANS..PER.1000.PEOPLE, which is replaced by:
+
+X8.8.2... LEVEL.OF [...]: Corresponds to the previously described ILO index.
+
+In the 'comp_security' table, we find the BCI index.
+
+VALUE: Corresponds to the BCI.
+
+In the 'comp_income' table, we find the index on government spending.
+
+Expense...of.GDP: Corresponds to the portion of GDP dedicated to government expenditure.
+
+## Data Exploration.
+
+A deeper analysis of the tables involves visualizing the data itself, establishing the relationships between them, and gaining insights into their analytical value.
+Additionally, we will standardize and clean the column names of the data frames, as we have already identified issues such as excessively long names, non-alphanumeric characters, and other problems.
+If we do not perform this task before the actual cleaning, we may encounter issues when applying functions like **`summary()`**, as the format of these variables may not be compatible.
+
+At this point, we will use the **`clean_names()`** function from the **`janitor`** library to clean and standardize the column names @firke2023. We will also use the **`glimpse()`** function from the **`dplyr`** library, which is part of the **`tidyverse`** package @wickham2023. It provides a more concise view of the data structure compared to **`summary()`**, including the number of observations, variable names, and data types.
+
+We will work on each table individually:
+
+[Table 'comp_income':]{.underline}
+
+```{r exploracion com_renta, echo=TRUE, message=FALSE, warning=FALSE}
+
+# visualizamos los primeros registros del dataset comp_renta 
+
+head(comp_renta)
+```
+
+As mentioned earlier, the name of the fourth column does not seem appropriate.
+We will rename it using **`rename()`** and proceed with **`clean_names()`** to ensure that the variables have proper names:
+
+```{r nombres comp_renta, echo=TRUE, message=FALSE, warning=FALSE}
+
+# Aplicamos 'rename()':
+comp_renta_clean <- comp_renta %>% rename(imf_index = Expense....of.GDP.)
+
+# Aplicamos 'clean_names'
+comp_renta_clean <- comp_renta_clean %>% clean_names()
+
+# visualizamos el resultado
+names(comp_renta_clean)
+```
+
+```{r visualizamos com_renta_clean, echo=TRUE, message=FALSE, warning=FALSE}
+
+# Aplicamos 'glimpse()'
+
+glimpse(comp_renta_clean)
+```
+
+We have the variables and the right format; we continue with the following table:
+
+[TABLE 'comp_security':]{.underline}
+
+```{r exploracion com_seguridad, echo=TRUE, message=FALSE, warning=FALSE}
+
+# visualizamos los primeros registros del dataset comp_seguridad 
+
+head(comp_seguridad)
+```
+
+The variable types and their value columns appear to have non-standard names, and we have unnecessary variables or those with no records that do not fully match the other tables.
+We will rename them using **`rename()`** and proceed with **`clean_names()`** to ensure that the variables have appropriate names in the standard format:
+
+```{r nombres comp_seguridad, echo=TRUE, message=FALSE, warning=FALSE}
+
+# Aplicamos 'rename()' al indice:
+comp_segur_clean <- comp_seguridad %>% rename(bci_index = Value)
+
+# Aplicamos 'rename()' a location 
+comp_segur_clean <- comp_segur_clean %>% rename(entity = LOCATION)
+
+# Aplicamos 'clean_names'
+comp_segur_clean <- comp_segur_clean %>% clean_names()
+
+# visualizamos el resultado
+names(comp_segur_clean)
+```
+
+```{r visualizamos com_segur_clean, echo=TRUE, message=FALSE, warning=FALSE}
+
+# Aplicamos 'glimpse()'
+
+glimpse(comp_segur_clean)
+```
+
+Once corrected and ensured of errors, we observe that apart from the variable of interest, 'bci_index', we have unnecessary columns and an inappropriate date format that we will note for rectification in the next phase.
+
+[TABLE 'infra':]{.underline}
+
+We visualize the first records of the 'infra' table:
+
+```{r exploracion infra, echo=TRUE, message=FALSE, warning=FALSE}
+
+head(infra)
+```
+
+The pattern of other tables is repeated: Four variables, three of them common.
+A fourth one is unique, with an exceptionally long name.
+We use the same procedure:
+
+```{r nombres infra, echo=TRUE, message=FALSE, warning=FALSE}
+
+# Aplicamos 'rename()':
+infra_clean <- infra %>% rename(uhc_index = Indicator.UHC.Service.Coverage.Index..SDG.3.8.1.)
+
+# Aplicamos 'clean_names'
+infra_clean <- infra_clean %>% clean_names()
+
+# visualizamos el resultado
+names(infra_clean)
+```
+
+```{r visualizamos infra_clean, echo=TRUE, message=FALSE, warning=FALSE}
+
+# Aplicamos 'glimpse()' a la tabla 'infra'
+
+glimpse(infra_clean)
+```
+
+Corrected and ensured of errors, we observe that indeed we have 4 variables (text strings, decimals, integers) compatible with what we have visualized in other tables: an entity name, a code acting as a key, a temporal dimension.
+Also, as the unique record of this table on which we will work, we have the UHC index on basic health coverage, previously described.
+
+TABLE 'poblacion': We visualize the first records of the 'poblacion' table:
+
+```{r exploracion poblacion, message=FALSE, warning=FALSE, include=FALSE}
+
+head(poblacion)
+# omitimos la salida en el pdf
+```
+
+In this table we have twenty-four variables with a different format from the other tables such as country name and code.
+It also has the same variable of the total population specified in age intervals which is very convenient for the purposes of this study.
+We proceed with the arrangements of the column names.
+
+```{r nombres poblacion, echo=TRUE, message=FALSE, warning=FALSE}
+
+# Copiamos la tabla
+poblacion_clean <- poblacion
+
+# Cambiamos nombre de country_name a entity
+poblacion_clean <- poblacion_clean %>% rename(entity = Country.name) 
+
+# Aplicamos 'rename()' para edad menos de 1:
+poblacion_clean <- poblacion_clean %>% rename(u_1 = Population.of.children.under.the.age.of.1)
+
+# Aplicamos 'rename()' para edad menos de 5:
+poblacion_clean <- poblacion_clean %>% rename(u_5 = Population.of.children.under.the.age.of.5)
+
+# Aplicamos 'rename()' para edad menos de 15:
+poblacion_clean <- poblacion_clean %>% rename(u_15 = Population.of.children.under.the.age.of.15)
+
+# Aplicamos 'rename()' para edad menos de 25:
+poblacion_clean <- poblacion_clean %>% rename(u_25 = Population.under.the.age.of.25)
+
+# Aplicamos 'rename()' para edad de entre 15 y 64:
+poblacion_clean <- poblacion_clean %>% rename(btn_15_64 = Population.aged.15.to.64.years)
+
+# Aplicamos 'rename()' para edad mayores de 15:
+poblacion_clean <- poblacion_clean %>% rename(old_15 = Population.older.than.15.years)
+
+# Aplicamos 'rename()' para edad mayores de 18:
+poblacion_clean <- poblacion_clean %>% rename(old_18 = Population.older.than.18.years)
+
+# Aplicamos 'rename()' para 1 anyo:
+poblacion_clean <- poblacion_clean %>% rename(at_1 = Population.at.age.1)
+
+# Aplicamos 'rename()' para edad entre 1 y 4:
+poblacion_clean <- poblacion_clean %>% rename(btn_1_4 = Population.aged.1.to.4.years)
+
+# Aplicamos 'rename()' para edad de entre 5 y 9:
+poblacion_clean <- poblacion_clean %>% rename(btn_5_9 = Population.aged.5.to.9.years)
+
+# Aplicamos 'rename()' para edad de entre 10 y 14:
+poblacion_clean <- poblacion_clean %>% rename(btn_10_14 = Population.aged.10.to.14.years)
+
+# Aplicamos 'rename()' para edad de entre 15 y 19:
+poblacion_clean <- poblacion_clean %>% rename(btn_15_19 = Population.aged.15.to.19.years)
+
+# Aplicamos 'rename()' para edad de entre 20 y 29:
+poblacion_clean <- poblacion_clean %>% rename(btn_20_29 = Population.aged.20.to.29.years)
+
+# Aplicamos 'rename()' para edad de entre 30 y 39:
+poblacion_clean <- poblacion_clean %>% rename(btn_30_39 = Population.aged.30.to.39.years)
+
+# Aplicamos 'rename()' para edad de entre 40 y 49:
+poblacion_clean <- poblacion_clean %>% rename(btn_40_49 = Population.aged.40.to.49.years)
+
+# Aplicamos 'rename()' para edad de entre 50 y 59:
+poblacion_clean <- poblacion_clean %>% rename(btn_50_59 = Population.aged.50.to.59.years)
+
+# Aplicamos 'rename()' para edad de entre 60 y 69:
+poblacion_clean <- poblacion_clean %>% rename(btn_60_69 = Population.aged.60.to.69.years)
+
+# Aplicamos 'rename()' para edad de entre 70 y 79:
+poblacion_clean <- poblacion_clean %>% rename(btn_70_79 = Population.aged.70.to.79.years)
+
+# Aplicamos 'rename()' para edad de entre 80 y 89:
+poblacion_clean <- poblacion_clean %>% rename(btn_80_89 = Population.aged.80.to.89.years)
+
+# Aplicamos 'rename()' para edad de entre 90 y 99:
+poblacion_clean <- poblacion_clean %>% rename(btn_90_99 = Population.aged.90.to.99.years)
+
+# Aplicamos 'rename()' para mayores de 100:
+poblacion_clean <- poblacion_clean %>% rename(old_100 = Population.older.than.100.years)
+
+# Aplicamos 'clean_names'
+poblacion_clean <- poblacion_clean %>% clean_names()
+
+# visualizamos el resultado
+names(poblacion_clean)
+```
+
+After correcting the fields, we observe that we indeed have all the variable names and intervals, and they have been appropriately renamed and ensured the format.
+We notice that it lacks an identifying entity code 'code'.
+We will decide on this aspect later when we unify and create a table to work with.
+
+We visualize the table statistics with glimpse():
+
+```{r visualizamos poblacion_clean, echo=TRUE, message=FALSE, warning=FALSE}
+
+# Aplicamos 'glimpse()' a la tabla 'infra'
+
+glimpse(poblacion_clean)
+```
+
+We observe that some fields are of type floating point \<dbl\>, which does not make sense when counting people.
+Therefore, this table requires an additional operation to adjust the \<dbl\> fields and convert them to integers \<int\>.
+
+```{r punto flotante a int en poblacion_clean, echo=TRUE, message=FALSE, warning=FALSE}
+
+# cambiamos el tipo de campos con un condicional 'if':
+
+poblacion_clean <- poblacion_clean %>%
+  mutate_if(is.double, as.integer)
+
+# Y volvemos a revisar el resultado con glimpse:
+
+glimpse(poblacion_clean)
+```
+
+And now it looks like we have all the attributes in the right format.
+Let's proceed with the next table.
+
+[TABLE 'resources':]{.underline}
+
+```{r exploracion recursos, echo=TRUE, message=FALSE, warning=FALSE}
+
+head(recursos)
+```
+
+This table respects the 4-column pattern we have seen in other tables.
+We have three columns common to the dataset and one that collects the object of study in this project, the ratio of medical personnel per 1000 people.
+Proceed with the cleaning and renaming:
+
+```{r nombres recursos_clean, echo=TRUE, message=FALSE, warning=FALSE}
+
+# Aplicamos 'rename()':
+recursos_clean <- recursos %>% rename(phy_index = Physicians..per.1.000.people.)
+
+# Aplicamos 'clean_names'
+recursos_clean <- recursos_clean %>% clean_names()
+
+# visualizamos el resultado
+names(recursos_clean)
+```
+
+```{r visualizamos recursos_clean, echo=TRUE, message=FALSE, warning=FALSE}
+
+# Aplicamos 'glimpse()' a la tabla 'recursos'
+
+glimpse(recursos_clean)
+```
+
+Format and the variables are correct.
+phy_index' is the variable that we will proceed to study in the next phases of this project.
+
+[TABLE 'income':]{.underline}
+
+```{r exploracion renta, echo=TRUE, message=FALSE, warning=FALSE}
+
+#Exploramos la tabla renta
+
+head(renta)
+```
+
+This table also respects the 4-column pattern we have seen in other tables.
+Have three columns common to the and one that collects the object of study in this project, the per capita income.
+We now proceed with the cleaning and renaming:
+
+```{r nombres renta, echo=TRUE, message=FALSE, warning=FALSE}
+
+# Aplicamos 'rename()':
+renta_clean <- renta %>% rename(gdp_index = GDP.per.capita.growth..annual...)
+
+# Aplicamos 'clean_names'
+renta_clean <- renta_clean %>% clean_names()
+
+# visualizamos el resultado
+names(renta_clean)
+```
+
+```{r visualizamos renta, echo=TRUE, message=FALSE, warning=FALSE}
+
+# Aplicamos 'glimpse()' a la tabla 'renta'
+
+glimpse(renta_clean)
+```
+
+We observe that the column type and format are appropriate for the variable of interest.
+We proceed to the next table:
+
+[TABLE 'seguridad':]{.underline}
+
+```{r exploracion seguridad, echo=TRUE, message=FALSE, warning=FALSE}
+
+#Exploramos la tabla seguridad
+
+head(seguridad)
+```
+
+We observe the same pattern as mentioned earlier.
+Three common variables and one variable for the study, the index of compliance with labor regulations, which is represented by a column with an excessively long name.
+We proceed with renaming and cleaning:
+
+```{r nombres seguridad, echo=TRUE, message=FALSE, warning=FALSE}
+
+# Aplicamos 'rename()':
+seguridad_clean <- seguridad %>% rename(ilo_index = X8.8.2...Level.of.national.compliance.with.labour.rights..freedom.of.association.and.collective.bargaining..based.on.International.Labour.Organization..ILO..textual.sources.and.national.legislation...SL_LBR_NTLCPL)
+
+# Aplicamos 'clean_names'
+seguridad_clean <- seguridad_clean %>% clean_names()
+
+# visualizamos el resultado
+names(seguridad_clean)
+```
+
+```{r visualizamos seguridad, echo=TRUE, message=FALSE, warning=FALSE}
+
+# Aplicamos 'glimpse()' a la tabla 'seguridad'
+
+glimpse(seguridad_clean)
+```
+
+Not observing any problems in the table, we proceed to verify the quality of the data.
+
+## Checking data quality
+
+At this point, we are going to look for infinite or NA values, as well as other issues such as blank records, and review other aspects of data quality that may be pending:
+
+[TABLE "comp_renta_clean"]{.underline}
+
+Searching for records with 'NA' or blank values:
+
+```{r calidad comp_renta_clean, echo=TRUE, message=FALSE, warning=FALSE}
+
+# Buscamos problemas en la tabla:
+print("NA")
+colSums(is.na(comp_renta_clean))
+print("Blancos")
+colSums(comp_renta_clean=="")
+
+```
+
+We did not find any infinite or blank values except in the 'code' column.
+We will continue with the next table.
+
+[TABLE "comp_segur_clean"]{.underline}
+
+Searching for records with 'NA' or blank values:
+
+```{r calidad comp_segur_clean, echo=TRUE, message=FALSE, warning=FALSE}
+
+# Buscamos problemas en la tabla:
+print("NA")
+colSums(is.na(comp_segur_clean))
+print("Blancos")
+colSums(comp_segur_clean=="")
+```
+
+flag_codes' registers problems, but it is a column that we note to remove in the next phase:
+
+[TABLE "infra_clean".]{.underline}
+
+We look for records with 'NA' or blank values:
+
+```{r calidad infra_clean, echo=TRUE, message=FALSE, warning=FALSE}
+# Buscamos problemas en la tabla:
+print("NA")
+colSums(is.na(infra_clean))
+print("Blancos")
+colSums(infra_clean=="")
+```
+
+We detected that in the column 'code' there are blank records, so we take note of them to work with them in the next phase, where we will undertake the cleaning.
+
+[TABLE "population_clean".]{.underline}
+
+We look for records with 'NA' or blank values:
+
+```{r calidad poblacion_clean I, echo=TRUE, message=FALSE, warning=FALSE}
+
+# Buscamos problemas en la tabla(I):
+print("NA")
+colSums(is.na(poblacion_clean))
+```
+
+We have infinite values in some columns.
+We take note to work on them in the next phase.
+
+Let's proceed to determine if there are any records with blank values, although we already know that the function won't sum correctly if there are 'NAs':
+
+```{r calidad poblacion_clean II, echo=TRUE, message=FALSE, warning=FALSE}
+
+# Buscamos problemas en la tabla (II)
+print("Blancos")
+colSums(poblacion_clean=="")
+```
+
+We observe that there are columns with 'NA' issues.
+Some variables, presumably, can be ignored as they do not belong to the age range of interest, but the 'NA' values in the 'population' column could be relevant.
+We take note to address these issues in the next phase.
+
+Let's proceed to search for records with 'NA' or blank values in the "recursos_clean" table:
+
+We have looked for records with 'NA' or blank values in the "recursos_clean" table and found that there are no such records.
+
+```{r recursos_clean, echo=TRUE, message=FALSE, warning=FALSE}
+
+# Buscamos problemas en la tabla:
+print("NA")
+colSums(is.na(recursos_clean))
+print("Blancos")
+colSums(recursos_clean=="")
+```
+
+We note that it presents the same problem as previously detected: the 'code' column has fifty-three blank records.
+We will address these problems in the next phase.
+
+TABLE "renta_clean".
+
+We look for records with 'NA' or blank values:
+
+```{r renta_clean, echo=TRUE, message=FALSE, warning=FALSE}
+
+# Buscamos problemas en la tabla:
+print("NA")
+colSums(is.na(renta_clean))
+
+print("Blancos")
+colSums(renta_clean=="")
+```
+
+Once again, we note that there are 784 blank values in the 'code' column.
+We repeat the process of annotating to correct in the next phase.
+
+[TABLE "security_clean]{.underline}
+
+We look for records with 'NA' or blank values:
+
+```{r seguridad_clean, echo=TRUE, message=FALSE, warning=FALSE}
+
+# Buscamos problemas en la tabla:
+print("NA")
+colSums(is.na(seguridad_clean))
+
+print("Blancos")
+colSums(seguridad_clean=="")
+```
+
+The results are in line with expectations.
+We proceed to the next phase where we will address various issues and build the final unified dataset for applying different models.
+
+# Phase 3: Data Preparation
+
+The first issue to tackle is the date format and temporal dimension.
+The different tables display data from different years.
+We have set the limit based on the lowest period recorded in the various tables, which in this case is 2015 from the 'seguridad' table.
+This will not prevent the occurrence of 'NA' values and other undesired effects when merging tables.
+
+Rectifying the date format
+
+The 'comp_segur_clean' table has a date format that is incompatible with the tables we are working with.
+We proceed to rectify it:
+
+```{r year en comp_segur_clean, echo=TRUE, message=FALSE, warning=FALSE}
+
+# Rectificamos el formato de fecha
+comp_segur_clean$time <- as.integer(substr(comp_segur_clean$time, 1, 4))
+
+# Renombramos la columna
+comp_segur_clean <- comp_segur_clean %>% rename(year = time)
+
+# visualizamos los nombres de las columnas
+head(comp_segur_clean)
+
+# Visualizamos los nombres de variables
+names(comp_segur_clean)
+```
+
+## Reduction of the time dimension
+
+```{r dimension temporal, echo=TRUE, message=FALSE, warning=FALSE}
+
+# Reducción de los conjuntos de datos a registros desde 2015 usando 'filter()'
+
+comp_renta <- comp_renta_clean %>% filter(year >= 2015 & year <= 2020)
+comp_seguridad <- comp_segur_clean %>% filter(year >= 2015 & year <= 2020)
+infra <- infra_clean %>% filter(year >= 2015 & year <= 2020)
+poblacion <- poblacion_clean %>% filter(year >= 2015 & year <= 2020)
+recursos <- recursos_clean %>% filter(year >= 2015 & year <= 2020)
+renta <- renta_clean %>% filter(year >= 2015 & year <= 2020)
+seguridad <- seguridad_clean %>% filter(year >= 2015 & year <= 2020)
+
+# Observamos las tablas con glimpse():
+print("infra")
+glimpse(infra)
+
+print("poblacion")
+glimpse(poblacion)
+
+print("recursos")
+glimpse(recursos)
+
+print("renta")
+glimpse(renta)
+
+print("seguridad")
+glimpse(seguridad)
+
+# Eliminamos las tablas 'clean'
+rm(comp_renta_clean, comp_segur_clean, infra_clean, poblacion_clean, recursos_clean, renta_clean, seguridad_clean)
+```
+
+Everything seems to be in order, the time dimension in the new variables has been reduced.
+
+## Joining the datasets
+
+We perform a full join using the dplyr library, i.e. we join the tables based on a key, preserving all rows on both 'sides'.
+If a key is not present it will be completed with 'NA'.
+
+```{r unificando, echo=TRUE, message=FALSE, warning=FALSE}
+
+# Unificamos las tablas con un 'full join':
+full_pra <- full_join(comp_renta, infra, by = c("entity", "code", "year")) %>%
+  full_join(poblacion, by = c("entity", "year")) %>%
+  full_join(recursos, by = c("entity", "code", "year")) %>%
+  full_join(renta, by = c("entity", "code", "year")) %>%
+  full_join(seguridad, by = c("entity", "code", "year")) %>% 
+  full_join(comp_seguridad, by = c("entity", "year"))
+ 
+# Visualizamos la nueva tabla:
+# glimpse(full_pra)
+# Comento para que la salida derive en un pdf de muchas paginas innesesariamente
+```
+
+Continue the cleaning process by reducing the segments or demographics that are not relevant to this study:
+
+## Column and variable cleaning.
+
+```{r columnas muertas, echo=TRUE, message=FALSE, warning=FALSE}
+
+# reducimos columnas irrelevantes
+
+full_pra <- select(full_pra, -c(frequency, flag_codes, measure, subject, indicator))
+```
+
+```{r glimpse full_pra, echo=TRUE, message=FALSE, warning=FALSE}
+
+# Visualizamos nuevamente la tabla para revisar los cambios
+
+glimpse(full_pra)
+```
+
+## Demographics
+
+The dataset contains numerous attributes where the population has been segmented into age groups.
+While we are interested in the number of individuals who are within 15-20 years of retirement - as they are potential clients for the company - we will keep all the columns to train different supervised models.
+
+### Country Codes and Entities
+
+We will create variables with 3-letter codes according to ISO 3166-1 alpha-3 standard @iso-is order to modify the empty fields and those with infinite values.
+
+```{r codigos de paises, echo=TRUE, message=FALSE, warning=FALSE}
+
+# Codigos UE
+eu_countries <- c("AUT", "BEL", "BGR", "HRV", "CYP", "CZE", "DNK", "EST", "FIN", "FRA", "DEU", "GRC", "HUN", "IRL", "ITA", "LVA", "LTU", "LUX", "MLT", "NLD", "POL", "PRT", "ROU", "SVK", "SVN", "ESP", "SWE", "USA", "CAN")
+# Resto de Europa (no UE)
+other_europe_countries <- c("ALB", "AND", "BIH", "BLR", "CHE", "GEO", "ISL", "LIE", "MDA", "MKD", "MNE", "NOR", "RUS", "SMR", "SRB", "UKR", "GBR")
+# Asia
+asia_countries <- c("AFG", "ARM", "AZE", "BHR", "BGD", "BTN", "BRN", "KHM", "CHN", "CYP", "GEO", "IND", "IDN", "IRN", "IRQ", "ISR", "JPN", "JOR", "KAZ", "KWT", "KGZ", "LAO", "LBN", "MYS", "MDV", "MNG", "MMR", "NPL", "OMN", "PAK", "PHL", "QAT", "SAU", "SGP", "KOR", "LKA", "SYR", "TWN", "TJK", "THA", "TUR", "TKM", "ARE", "UZB", "VNM", "YEM")
+# América
+america_countries <- c("ARG", "BHS", "BRB", "BLZ", "BOL", "BRA", "CHL", "COL", "CRI", "CUB", "DOM", "ECU", "SLV", "GRD", "GTM", "HTI", "HND", "JAM", "MEX", "NIC", "PAN", "PRY", "PER", "KNA", "LCA", "VCT", "TTO", "URY", "VEN")
+# Oceanía
+oceania_countries <- c("AUS", "FJI", "KIR", "MHL", "FSM", "NRU", "NZL", "PLW", "PNG", "WSM", "SLB", "TON", "TUV", "VUT")
+# Africa
+africa_countries <- c("DZA", "AGO", "BEN", "BWA", "BFA", "BDI", "CPV", "CMR", "CAF", "TCD", "COM", "COG", "CIV", "DJI", "EGY", "GNQ", "ERI", "ETH", "GAB", "GMB", "GHA", "GIN", "GNB", "KEN", "LSO", "LBR", "LBY", "MDG", "MWI", "MLI", "MRT", "MUS", "MAR", "MOZ", "NAM", "NER", "NGA", "RWA", "STP", "SEN", "SYC", "SLE", "SOM", "ZAF", "SSD", "SDN", "SWZ", "TZA", "TGO", "TUN", "UGA", "ZMB", "ZWE")
+
+# Siglas de regiones y organizaciones y otros lugare peculiares y y pintorescos
+world_organizations <- c("EUR", "NAM", "SAM", "ANT", "OCE", "G-7", "ASM", "ATG", "AIA", "ABW", "BMU", "BES", "VGB", "CYM", "COK", "CUW", "COD", "DMA", "SWZ", "AFR", "ASI", "EUR", "CIV", "CZE", "FLK", "GUF", "PYF", "GIB", "OECD", "FRO", "GRL", "GLP", "GUM", "GGY", "GUY", "HKG", "IMN", "JEY", "XKX", "MAC", "MTQ", "MYT", "MSR", "NCL", "NIU", "PRK", "MNP", "PSE", "PRI", "REU", "BLM", "SHN", "MAF", "SPM", "SXM", "SUR", "TLS", "TKL", "VIR", "TCA", "VIR", "WLF", "ESH", "MCO", "WRL", "E19", "G20", "E20", "HIC", "LDC", "LAC", "LDV", "LDR", "L-C", "L-R", "LWC", "LMC", "M-R", "SID", "U-I", "EU", "LAC", "NAM", "AFR", "ASI", "EUR", "ACS", "HIN", "SAS", "AMR", "EAM", "EEU", "HIC", "LMC", "SEA", "UMI", "LWC", "LMC", "MEN", "MIN", "SSF", "WEN", "LWC", "OCE", "EAP", "LMC", "U-I", "CSA", "ENA", "LDV", "NAF", "SID", "SSF" ) 
+
+
+# Combinamos todas las listas de códigos de países en una
+all_countries <- c(eu_countries, other_europe_countries, asia_countries, america_countries, oceania_countries, africa_countries, world_organizations)
+
+# Creamos un vector con nombres de paises en ingles
+all_country_nameI <- c("Austria", "Belgium", "Bulgaria", "Croatia", "Cyprus", "Czech Republic", "Denmark", "Estonia", "Finland", "France", "Germany", "Greece", "Hungary", "Ireland", "Italy", "Latvia", "Lithuania", "Luxembourg", "Malta", "Netherlands", "Poland", "Portugal", "Romania", "Slovakia", "Slovenia", "Spain", "Sweden", "United States", "Canada", "Albania", "Andorra", "Bosnia and Herzegovina", "Belarus", "Switzerland", "Georgia", "Iceland", "Liechtenstein", "Moldova", "North Macedonia", "Montenegro", "Norway", "Russia", "San Marino", "Serbia", "Ukraine", "United Kingdom", "Afghanistan", "Armenia", "Azerbaijan", "Bahrain", "Bangladesh", "Bhutan", "Brunei", "Cambodia", "China", "Cyprus", "Georgia", "India", "Indonesia", "Iran", "Iraq", "Israel", "Japan", "Jordan", "Kazakhstan", "Kuwait", "Kyrgyzstan", "Laos", "Lebanon", "Malaysia", "Maldives", "Mongolia", "Myanmar", "Nepal", "Oman", "Pakistan", "Philippines", "Qatar", "Saudi Arabia", "Singapore", "South Korea", "Sri Lanka", "Syria", "Taiwan", "Tajikistan", "Thailand", "Turkey", "Turkmenistan", "United Arab Emirates", "Uzbekistan", "Vietnam", "Yemen", "Argentina", "Bahamas", "Barbados", "Belize", "Bolivia", "Brazil", "Chile", "Colombia", "Costa Rica", "Cuba", "Dominican Republic", "Ecuador", "El Salvador", "Grenada", "Guatemala", "Haiti", "Honduras", "Jamaica", "Mexico", "Nicaragua", "Panama", "Paraguay", "Peru", "Saint Kitts and Nevis", "Saint Lucia", "Saint Vincent and the Grenadines", "Trinidad and Tobago", "Uruguay", "Venezuela", "Australia", "Fiji", "Kiribati", "Marshall Islands", "Micronesia (country)", "Nauru", "New Zealand", "Palau", "Papua New Guinea", "Samoa", "Solomon Islands", "Tonga", "Tuvalu", "Vanuatu", "Algeria", "Angola", "Benin", "Botswana", "Burkina Faso", "Burundi", "Cape Verde", "Cameroon", "Central African Republic", "Chad", "Comoros", "Congo", "Djibouti", "Egypt", "Equatorial Guinea", "Eritrea", "Ethiopia", "Gabon", "Gambia", "Ghana", "Guinea", "Guinea-Bissau", "Ivory Coast", "Kenya", "Lesotho", "Liberia", "Libya", "Madagascar", "Malawi", "Mali", "Mauritania", "Mauritius", "Morocco", "Mozambique", "Namibia", "Niger", "Nigeria", "Rwanda", "Sao Tome and Principe", "Senegal", "Seychelles", "Sierra Leone", "Somalia", "South Africa", "South Sudan", "Sudan", "Swaziland", "Tanzania", "Togo", "Tunisia", "Uganda", "Zambia", "Zimbabwe", "Europe", "Northern America (UN)", "Sur America", "Antartida", "Oceania (UN)", "G-7", "American Samoa", "Antigua and Barbuda", "Anguilla", "Aruba", "Bermuda", "Bonaire Sint Eustatius and Saba", "British Virgin Islands", "Cayman Islands", "Cook Islands", "Curacao", "Democratic Republic of Congo", "Dominica", "Eswatini", "Africa (UN)", "Asia (UN)", "Europe (UN)", "Cote d'Ivoire", "Czechia", "Falkland Islands", "French Guiana", "French Polynesia","Gibraltar", "OECD", "Faeroe Islands", "Greenland", "Guadeloupe", "Guam", "Guernsey", "Guyana", "Hong Kong", "Isle of Man", "Jersey", "Kosovo", "Macao", "Martinique", "Mayotte", "Montserrat", "New Caledonia", "Niue", "North Korea", "Northern Mariana Islands", "Palestine", "Puerto Rico", "Reunion", "Saint Barthelemy", "Saint Helena", "Saint Martin (French part)", "Saint Pierre and Miquelon", "Sint Maarten (Dutch part)", "Suriname", "Timor", "Tokelau", "United States Virgin Islands", "Turks and Caicos Islands", "United States Virgin Islands", "Wallis and Futuna", "Western Sahara", "Monaco", "World", "EA19", "G-20", "EU27_2020", "High-income countries", "Land-locked developing countries (LLDC)", "Latin America and the Caribbean (UN)", "Least developed countries", "Less developed regions", "Less developed regions, excluding China", "Less developed regions, excluding least developed countries", "Low-income countries", "Lower-middle-income countries", "More developed regions", "Small island developing states (SIDS)", "Upper-middle-income countries", "European Union", "Latin America and Caribbean", "North America", "Africa", "Asia", "Europe", "Europe and Central Asia", "High income", "South Asia", "Americas", "Eastern Mediterranean", "Eastern Europe", "High-income", "Lower-middle-income")
+```
+
+```{r all_country_name2, echo=TRUE, message=FALSE, warning=FALSE}
+all_country_name2 <- c("South-east Asia", "Upper-middle-income", "Low income", "Lower middle income", "Middle East and North Africa", "Middle income", "Sub-Saharan Africa", "Western Pacific", "Low-income", "Oceania", "East Asia and Pacific", "Low and middle income", "Upper middle income", "Central and Southern Asia (UN)", "Europe and Northern America (UN)", "Least Developed Countries (LDCs)", "Northern Africa (UN)", "Small Island Developing States (SIDS)", "Sub-Saharan Africa (UN)")
+
+# fusionamos
+all_country_names <- c(all_country_nameI, all_country_name2)
+
+# Eliminamos lo que no necesitamos:
+rm(africa_countries, america_countries, asia_countries, eu_countries, oceania_countries, other_europe_countries, world_organizations, all_country_nameI, all_country_name2)
+```
+
+Next, we will search for 'NA' values in the 'code' column and assign them the ISO code based on the name or, if the name listed in the 'entity' column is already a code, we will assign them their corresponding name using the pairs in 'all_country_names' and 'all_countries'.
+
+```{r ifelse search codes, echo=TRUE, message=FALSE, warning=FALSE}
+
+# si 'code' es un NA, entonces en el vector de "codigos de pais" que casa con el par nombre en "nombres de paises", el tercer argumento es el que se ejecuta si la condicion 'is.na' no se cumple, dejando como esta
+full_pra$code <- ifelse(is.na(full_pra$code), all_countries[match(full_pra$entity, all_country_names)], full_pra$code)
+
+# Este caso es para aquellos registros que tienen un codigo de pais en 'entity' y tambien y a la vez, un NA en 'code'
+full_pra$entity <- ifelse(is.na(full_pra$code) & full_pra$entity %in% all_countries, all_country_names[match(full_pra$entity, all_countries)], full_pra$entity)
+
+# Reemplaza "" en 'code' con los códigos correspondientes de all_countries.
+full_pra <- full_pra %>% mutate(code = if_else(code == "", all_countries[match(entity, all_country_names)], code))
+```
+
+And we check to locate the errors, we represent them in a table to manage them better (printing is omitted in the pdf).
+
+```{r NA search entity code, eval=FALSE, message=FALSE, warning=FALSE, include=FALSE}
+
+# Buscamos valores NA o en blanco en la primera y segunda columna 
+na_blank_rows <- which(is.na(full_pra[, c('entity', 'code')]) | full_pra[, c('entity', 'code')] == "", arr.ind = TRUE)
+full_pra[na_blank_rows[, 1], ]
+```
+
+And at this point, we can confirm that we don't have any issues with infinite or blank values in the first two columns.
+
+Let's check the 'year' column for infinite or blank values:
+
+```{r NA search year, echo=TRUE, message=FALSE, warning=FALSE}
+
+# Buscamos filas donde 'year' es NA
+na_rows <- is.na(full_pra$year)
+
+# Buscamos las filas donde 'year' es 'blank'
+blank_rows <- (full_pra$year == "")
+
+# Vemos las filas donde 'year' es NA
+full_pra[na_rows,]
+
+# vemos las filas donde 'year' es blank
+full_pra[na_rows, ]
+
+```
+
+We also know that the date column does not contain any errors.
+This is important because the combination of information and other data operations will rely on this column and the code column as primary keys.
+
+The 'entity' column has duplicate values that we will unify using the key 'code' and 'year'.
+But first, we will try to select the shortest entity name among the duplicates with the same code and year.
+
+```{r mutate entity, echo=TRUE, message=FALSE, warning=FALSE}
+
+# Agrupamos por 'year' y 'code':
+full_pra <- full_pra %>%
+  group_by(year, code) %>%
+  mutate(
+    entity = entity[which.min(nchar(entity))] # Ponemos los nombres mas cortos
+  ) %>%
+  ungroup()
+
+# visualizamos la columna y los registros unicos evitando duplicados y los nombres es algo que se repiten en esa columna:
+# unique(full_pra$entity)
+# omitimos la impresion
+```
+
+We observe that we have 282 names of countries, regions, organisations or, in short, entities.
+
+The records of the same year and identification code are duplicates, we are going to merge them, saving the records that coincide by calculating the average:
+
+```{r aggregate sapply, echo=TRUE, message=FALSE, warning=FALSE}
+
+# Identificamos las columnas numéricas y usamos este vector en aggregate para calcular la media de las columnas que tenga la misma fecha y código identificativo
+numeric_cols <- sapply(full_pra, is.numeric) # Crea un vector con todas las columnas numéricas
+
+# Aplicamos aggregate:
+
+full_pra_no_duplicados <- aggregate(full_pra[, numeric_cols], by=list( full_pra$entity, full_pra$code, full_pra$year), FUN=mean, na.rm=TRUE)
+
+# Visualizamos la nueva tabla:
+
+glimpse(full_pra_no_duplicados)
+```
+
+We note that we already have unique records with unique names, reducing the number of instances, to 1637 objects in total.
+The new table has a problem with the variable names, the type of columns and the 'NaN' (Not a number) values resulting from dividing NA in the aggregate function, as the function has calculated the averages from a division of zeros, returning infinity.
+We will address all the problems below and leave the 'NaN' problem for a next step when we work with each variable:
+
+```{r renombrando tabla sin duplicados, echo=TRUE, message=FALSE, warning=FALSE}
+
+# Renombramos Group.1 a entity y cremos un nuevo df
+pra1 <- full_pra_no_duplicados %>% rename(entity = Group.1)
+
+# Renombramos Group.2 a code
+pra1 <- pra1 %>%  rename(code = Group.2)
+
+# Eliminamos la columna Group.3 y dejamos la de 'year'
+pra1 <- subset(pra1, select = -Group.3)
+
+# Cambiamos el tipo de variables de punto flotante a integrales usando un 'for' en "year", "population", "u_1", "u_5", "u_15", "u_u25", "btn_15_64", "old_15", "old_18", "at_1", "btn_1_4", "btn_5_9",  "btn_10_14", "btn_15_19", "btn_20_29", "btn_30_39", "btn_40_49", "btn_50_59", "btn_60_69", "btn_70_79", "btn_80_89", "btn_90_99", "old_100":
+
+puntos_flotantes <- c("year", "population", "u_1", "u_5", "u_15", "u_25", "btn_15_64", "old_15", "old_18", "at_1", "btn_1_4", "btn_5_9",  "btn_10_14", "btn_15_19", "btn_20_29", "btn_30_39", "btn_40_49", "btn_50_59", "btn_60_69", "btn_70_79", "btn_80_89", "btn_90_99", "old_100")
+
+# Bucle for para cambiar cada columna
+for (col in puntos_flotantes) {
+  if (col %in% names(pra1)) {
+    pra1[[col]] <- as.integer(pra1[[col]])
+  } else {
+    warning(paste("La columna", col, "no se encuentra en el dataframe."))
+  }
+}
+
+# Necesitamos cambiar el orden de las columnas para poder entender los datos mejor de un vistazo
+orden <- c("entity", "code", "year", "gdp_index", "imf_index", "uhc_index", "bci_index", "ilo_index", "phy_index", "u_1", "u_5", "u_15", "u_25", "btn_15_64", "old_15", "old_18", "at_1", "btn_1_4", "btn_5_9", "btn_10_14", "btn_15_19", "btn_20_29", "btn_30_39", "btn_40_49", "btn_50_59", "btn_60_69", "btn_70_79", "btn_80_89", "btn_90_99", "old_100", "population")
+
+# Reordenar las columnas
+pra1 <- pra1[, orden]
+
+
+
+# visualizamos el dataframe:
+glimpse(pra1)
+
+# Visualizamos las variables
+names(pra1)
+
+```
+
+We now have a table "pra1" to work on, with all its records unified.
+Let's clean up the working environment:
+
+```{r limpieza1, echo=TRUE, message=FALSE, warning=FALSE}
+
+# Creamos una lista de todas las variables
+all_vars <- ls()
+
+# Creamos una lista de las variables a mantener
+keep_vars <- "pra1"
+
+# Creamos una lista de las variables a borrar con setdiff
+delete_vars <- setdiff(all_vars, keep_vars)
+
+# Borrar lo que ya no necesitamos:
+rm(list = delete_vars) 
+rm(all_vars)
+rm(keep_vars)
+rm(delete_vars)
+
+# Copia de seguridad del dataframe:
+write.csv(pra1, file= "pra1.csv")
+```
+
+### Creating regions for each country
+
+Once we have ensured the integrity of the table and before we start searching for 'NA' and blank values on the dataframe, for example on variables such as 'gdp' and the different populations, we need to create regions.
+
+```{r na search, eval=FALSE, message=FALSE, warning=FALSE, include=TRUE}
+# Buscamos filas donde 'year' es NA
+na_rows <- is.na(pra1$gdp_index)
+
+# Buscamos las filas donde 'year' es 'blank'
+blank_rows <- (pra1$gdp_index == "")
+
+# Vemos las filas donde 'year' es NA
+pra1[na_rows,]
+
+# vemos las filas donde 'year' es blank
+pra1[na_rows, ]
+```
+
+We observed numerous NaN (Not a Number).
+
+So far, we have kept different data relating to geographical subdivisions containing numerical values referring to the different numerical indices that we have given to collect as variables that we will use to impute missing data.
+We are going to create geographical subdivisions with the data:
+
+```{r paises y zonas, echo=TRUE, message=FALSE, warning=FALSE}
+
+# Codigos UE
+eu_countries <- unique(c("AUT", "BEL", "BGR", "HRV", "CYP", "CZE", "DNK", "EST", "FIN", "FRA", "DEU", "GRC", "HUN", "IRL", "ITA", "LVA", "LTU", "LUX", "MLT", "NLD", "POL", "PRT", "ROU", "SVK", "SVN", "ESP", "SWE"))
+# Resto de Europa (no UE)
+other_europe_countries <- unique(c("ALB", "AND", "BIH", "BLR", "CHE", "GEO", "ISL", "LIE", "MDA", "MKD", "MNE", "NOR", "RUS", "SMR", "SRB", "UKR", "GBR", "MCO", "TUR", "OWID_KOS", "FRO", "GIB", "XKX", "GRL", "GGY", "JEY", "IMN"))
+# Asia
+asia_countries <- unique(c("AFG", "ARM", "AZE", "BHR", "BGD", "BTN", "BRN", "KHM", "CHN", "IND", "IDN", "IRN", "IRQ", "ISR", "JPN", "JOR", "KAZ", "KWT", "KGZ", "LAO", "LBN", "MYS", "MDV", "MNG", "MMR", "NPL", "OMN", "PAK", "PHL", "QAT", "SAU", "SGP", "KOR", "LKA", "SYR", "TWN", "TJK", "THA", "TKM", "ARE", "UZB", "VNM", "YEM", "HKG", "PSE", "MAC", "TLS", "PRK"))
+
+# América del Norte
+north_america_countries <- unique(c("USA", "CAN", "MEX", "PRI", "ASM", "ATG", "BMU", "TCA", "MNP"))
+
+# América Central
+central_america_countries <- unique(c("BLZ", "CRI", "SLV", "GTM", "HND", "NIC", "PAN"))
+
+# América del Sur
+south_america_countries <- unique(c("ARG", "BOL", "BRA", "CHL", "COL", "ECU", "GUY", "PRY", "PER", "SUR", "URY", "VEN", "FLK", "GUF", "GLP", "SPM"))
+
+# Caribe
+caribbean_countries <- unique(c("BHS", "BRB", "CUB", "DOM", "GRD", "JAM", "KNA", "LCA", "VCT", "TTO", "ABW", "HTI", "DMA", "AIA", "MTQ", "MSR", "PRI", "MAF", "BES", "BLM", "CYM", "CUW", "VGB", "VIR", "SXM"))
+
+
+# Oceanía
+oceania_countries <- unique(c("AUS", "FJI", "KIR", "MHL", "FSM", "NRU", "NZL", "PLW", "PNG", "WSM", "SLB", "TON", "TUV", "VUT", "NCL", "GUM", "MYT", "NIU", "COK","TKL", "WLF", "PYF"))
+
+# Africa
+africa_countries <- unique(c("DZA", "AGO", "BEN", "BWA", "BFA", "BDI", "CPV", "CMR", "CAF", "TCD", "COM", "COG", "CIV", "DJI", "EGY", "GNQ", "ERI", "ETH", "GAB", "GMB", "GHA", "GIN", "GNB", "KEN", "LSO", "LBR", "LBY", "MDG", "MWI", "MLI", "MRT", "MUS", "MAR", "MOZ", "NAM", "NER", "NGA", "RWA", "STP", "SEN", "SYC", "SLE", "SOM", "ZAF", "SSD", "COD", "TUN", "TGO", "TZA", "UGA", "ZMB", "ZWE", "SDN", "SHN", "SSF", "SWZ", "REU"))
+
+
+# Siglas de regiones y organizaciones y otros lugare peculiares y y pintorescos
+world_organizations <- unique(c("EUR", "NAM", "SAM", "ANT", "OCE", "G-7", "ASM", "ATG", "AIA", "BMU", "BES", "VGB", "CUW", "DMA", "AFR", "ASI", "CIV", "FLK", "GUF", "OECD", "FRO", "GRL", "GLP", "GGY", "GUY", "IMN", "XKX", "MTQ", "MYT", "MSR", "PRK", "MNP" , "PRI", "BLM", "SHN", "MAF", "SPM", "SXM", "SUR", "TLS", "TKL", "VIR", "TCA", "VIR", "WLF", "ESH", "WRL", "E19", "G20", "E20", "HIC", "LDC", "LAC", "LDV", "LDR", "L-C", "L-R", "LWC", "LMC", "M-R", "SID", "U-I", "EU", "LAC", "NAM", "AFR", "ASI", "EUR", "ACS", "HIN", "SAS", "AMR", "EAM", "EEU", "HIC", "LMC", "SEA", "UMI", "LWC", "LMC", "MEN", "MIN", "WEN", "LWC", "OCE", "EAP", "LMC", "U-I", "CSA", "ENA", "LDV", "NAF", "SID", "SSF", "OECDE", "OWID_WRL" ))
+
+
+# Juntamos todas las listas de códigos de países en una sola
+all_countries <- c(north_america_countries, central_america_countries, south_america_countries, caribbean_countries)
+
+# Eliminamos de 'world_organizations' los códigos que ya están en 'all_countries'
+world_organizations <- world_organizations[!world_organizations %in% all_countries]
+```
+
+We now need to classify the registers geographically or according to whether they are organisations, divisions or entities:
+
+```{r pais y zona, echo=TRUE, message=FALSE, warning=FALSE}
+
+
+# Aseguramos que los códigos son todos mayúsculas en el dataframe:
+pra1$code <- toupper(pra1$code)
+
+# Añadimos la nueva columna 'region' al dataframe 'pra1':
+pra1 <- pra1 %>%
+  mutate(region = case_when(
+    code %in% eu_countries ~ "UE",
+    code %in% other_europe_countries ~ "Europa no UE",
+    code %in% asia_countries ~ "Asia",
+    code %in% north_america_countries ~ "América del Norte",
+    code %in% central_america_countries ~ "América Central",
+    code %in% south_america_countries ~ "América del Sur",
+    code %in% caribbean_countries ~ "Caribe",
+    code %in% oceania_countries ~ "Oceanía",
+    code %in% africa_countries ~ "África",
+    code %in% world_organizations ~ "Organizaciones y otros",
+    TRUE ~ "No clasificado"
+  ))
+
+
+# Aseguramos el formato de los nombres de variables:
+pra1 <- pra1 %>% clean_names()
+
+# Observamos la tabla
+glimpse(pra1)
+
+# Analizamos la nueva columna 'region' en busca de blancos y NA
+na_rows <- is.na(pra1$region)
+
+# Buscamos blank
+blank_rows <- (pra1$region == "")
+
+# Vemos las filas donde 'year' es NA
+pra1[na_rows,]
+
+# vemos las filas donde 'year' es blank
+pra1[na_rows, ]
+
+```
+
+'region' is a new categorical variable.
+Its format is correct \<chr\> and that there is no 'NA' or 'blank'.
+
+Tidy up the dataframe to better visualise the data and detect errors:
+
+```{r pra_ordenado, echo=TRUE, message=FALSE, warning=FALSE}
+# Ordenamos el dataframe segun la region, el codigo y la entidad
+pra1_ordenado <- pra1 %>%
+  arrange(region, code, entity)
+
+head(pra1_ordenado)
+```
+
+Proceeding to search for codes longer than three characters:
+
+```{r error_code, echo=TRUE, message=FALSE, warning=FALSE}
+
+# seleccionamos, si existen, registros cuyo código sea mayor de 3 caracteres:
+
+error_code <- subset(pra1_ordenado, nchar(code) > 3)
+
+# Imprimimos los resultados
+print(error_code)
+
+```
+
+Seven records have been merged, reducing the total number of objects from 1637 to 1630.
+We have noticed that the codes and entities are not fully unified yet, as the codes do not match.
+We will rectify this, taking into account that we have instances of 'kosovo', 'OCDE', and 'World'.
+
+```{r rectificando codes, echo=TRUE, message=FALSE, warning=FALSE}
+
+# Rectificamos los códigos de Kosovo a XKX:
+pra1_ordenado$code <- sub("OWID_KOS", "XKX", pra1_ordenado$code)
+
+# Rectificamos los códigos de OECDE a OCD:
+pra1_ordenado$code <- sub("OECDE", "OCD", pra1_ordenado$code)
+
+# Rectificamos los códigos de OWID_WRL a WRL:
+pra1_ordenado$code <- sub("OWID_WRL", "WRL", pra1_ordenado$code)
+
+# Repetimos, seleccionamos, si existen, registros cuyo código sea mayor de 3 caracteres y ver si los cambios han surtido efecto:
+error_code <- subset(pra1_ordenado, nchar(code) > 3)
+
+# Imprimimos los resultados actualizados
+print(error_code)
+
+# Salvamos una copia del dataframe:
+write.csv(pra1_ordenado, file= "pra1_ordenado.csv")
+```
+
+Now there are no codes with inappropriate formats, but there are still several duplicate entities in the dataset (based on entity-year criteria).
+Therefore, we will once again use aggregate() to recombine the information in the table.
+
+```{r recombinando el dataframe, echo=TRUE, message=FALSE, warning=FALSE}
+
+# Identificamos las columnas numéricas y usamos este vector en aggregate para calcular la media de las columnas que tenga la misma fecha y código identificativo
+
+numeric_cols <- sapply(pra1_ordenado, is.numeric) # Crea un vector con todas las columnas numéricas
+
+# Aplicamos aggregate:
+
+pra1 <- aggregate(pra1_ordenado[, numeric_cols], by=list( pra1_ordenado$entity, pra1_ordenado$code, pra1_ordenado$year), FUN=mean, na.rm=TRUE)
+
+# Visualizamos la nueva tabla:
+
+glimpse(pra1)
+
+# copia de seguridad:
+pra1_c <- pra1
+```
+
+As before, have unwanted changes in column type and variable names.
+We need to reuse the strategy and code used previously:
+
+```{r renombrado II en pra1, echo=TRUE, message=FALSE, warning=FALSE}
+
+# Renombramos Group.1 a entity y cremos un nuevo df
+pra1 <- pra1 %>% rename(entity = Group.1)
+
+# Renombramos Group.2 a code
+pra1 <- pra1 %>%  rename(code = Group.2)
+
+# Eliminamos la columna Group.3 y dejamos la de 'year'
+pra1 <- subset(pra1, select = -Group.3)
+
+# Cambiamos el tipo de variables de punto flotante a integrales usando un 'for' en "year", "population", "u_1", "u_5", "u_15", "u_u25", "btn_15_64", "old_15", "old_18", "at_1", "btn_1_4", "btn_5_9",  "btn_10_14", "btn_15_19", "btn_20_29", "btn_30_39", "btn_40_49", "btn_50_59", "btn_60_69", "btn_70_79", "btn_80_89", "btn_90_99", "old_100":
+
+puntos_flotantes <- c("year", "population", "u_1", "u_5", "u_15", "u_25", "btn_15_64", "old_15", "old_18", "at_1", "btn_1_4", "btn_5_9",  "btn_10_14", "btn_15_19", "btn_20_29", "btn_30_39", "btn_40_49", "btn_50_59", "btn_60_69", "btn_70_79", "btn_80_89", "btn_90_99", "old_100")
+
+# Bucle for para cambiar cada columna
+for (col in puntos_flotantes) {
+  if (col %in% names(pra1)) {
+    pra1[[col]] <- as.integer(pra1[[col]])
+  } else {
+    warning(paste("La columna", col, "no se encuentra en el dataframe."))
+  }
+}
+
+##### Recreamos region #######################
+# Aseguramos que los códigos son todos mayúsculas en el dataframe:
+pra1$code <- toupper(pra1$code)
+
+# Añadimos la nueva columna 'region' al dataframe 'pra1':
+pra1 <- pra1 %>%
+  mutate(region = case_when(
+    code %in% eu_countries ~ "UE",
+    code %in% other_europe_countries ~ "Europa no UE",
+    code %in% asia_countries ~ "Asia",
+    code %in% north_america_countries ~ "América del Norte",
+    code %in% central_america_countries ~ "América Central",
+    code %in% south_america_countries ~ "América del Sur",
+    code %in% caribbean_countries ~ "Caribe",
+    code %in% oceania_countries ~ "Oceanía",
+    code %in% africa_countries ~ "África",
+    code %in% world_organizations ~ "Organizaciones y otros",
+    TRUE ~ "No clasificado"
+  ))
+
+# Ordenamos el dataframe segun la region, el codigo y la entidad
+pra1 <- pra1 %>%
+  arrange(region, code, entity)
+
+# Aplicamos 'clean_names'
+pra1 <- pra1 %>% clean_names()
+
+
+# visualizamos el dataframe:
+glimpse(pra1)
+
+# Visualizamos las variables
+names(pra1)
+
+# Limpieza
+ rm(pra1_ordenado, puntos_flotantes, blank_rows, na_rows, numeric_cols)
+ 
+# Copia del dataframe
+ write.csv(pra1, file= "pra1.csv")
+```
+
+## Imputing missing values in GDP column
+
+As observed earlier, the GDP column has numerous NaN values.
+We will impute the missing values based on the available data in the variable.
+To begin with, we will impute the missing values by taking the average of the records from the year and the previous year of the missing entry.
+Let's start by installing two new libraries that we will need.
+
+```{r carga pasiva de librerias, echo=FALSE, message=FALSE, warning=FALSE}
+
+if (!require('mice')) install.packages('mice'); library(mice)
+if (!require('zoo')) install.packages('zoo'); library(zoo)
+```
+
+```{r imputamos la media a gdp, echo=TRUE, message=FALSE, warning=FALSE}
+
+
+# Creamos una función para imputar con la media solo si los valores adyacentes no son 0
+impute_with_mean <- function(x) {
+  na_loc <- is.na(x)
+  prev_val <- ifelse(is.na(lag(x)), 0, lag(x))
+  next_val <- ifelse(is.na(lead(x)), 0, lead(x))
+  x[na_loc & prev_val != 0 & next_val != 0] <- (prev_val + next_val)/2 # si los valores anterior/posterior no son = 0
+  return(x)
+}
+
+# Aplicamos la función a cada grupo de 'code'
+pra1 <- pra1 %>%
+  arrange(code, year) %>% # organizamos por code y year
+  group_by(code) %>% # agrupamos por code
+  mutate(gdp_index = impute_with_mean(gdp_index)) # imputa por la media si esta disponible segun los parametros de la funcion
+```
+
+The code has not covered all cases where there are 'NAs'.
+But we had retained data from different regions to be able to impute data.
+We will create regions for the 'gdp_index':
+
+```{r gdp_index, echo=TRUE, message=FALSE, warning=FALSE}
+
+
+# Agregamos una nueva columna que indique la región de cada país
+pra1 <- pra1 %>%
+  mutate(region_gdp = case_when(
+    code %in% eu_countries ~ "EU",
+    code %in% other_europe_countries ~ "ACS",
+    code %in% africa_countries ~ "LWC",
+    (code %in% caribbean_countries | code %in% south_america_countries | code %in% central_america_countries) ~ "LAC",
+    code %in% asia_countries ~ "EAP",
+    code %in% oceania_countries ~ "LWC",
+    code %in% north_america_countries ~ "HIN",
+    TRUE ~ NA_character_
+  ))
+
+# Filtramos los datos de las regiones
+region_data_gdp <- pra1 %>%
+  filter(code %in% c("EU", "ACS", "LWC", "LAC", "EAP", "HIN"))
+
+# Unimos los datos de las regiones a los datos de los países
+pra1 <- pra1 %>%
+  left_join(region_data_gdp, by = c("region_gdp" = "code", "year"), suffix = c("", "_region"))
+
+# Imputamos los valores faltantes de 'gdp_index' utilizando los valores de las regiones
+pra1 <- pra1 %>%
+  mutate(gdp_index = ifelse(is.na(gdp_index), gdp_index_region, gdp_index))
+
+# renombramos columnas en pra1
+pra1 <- pra1 %>%  rename(entity_global_gdp = entity_region)
+pra1 <- pra1 %>%  rename(gdp_global = gdp_index_region)
+
+# Eliminamos lo que no necesitamos en la tabla 'pra1':
+pra1 <- select(pra1, -matches("_region"))
+
+# Nos quedamos con lo que necesitamos en la tabla 'region_data_gdp':
+region_data_gdp <- select(region_data_gdp, entity, code, year, gdp_index)
+
+# visualizamos la tabla pra1
+print(pra1)
+
+# visualizamos las variables
+names(pra1)
+
+#visualizamos la tabla region_data_gdp
+print(region_data_gdp)
+```
+
+We look at the changes.
+We have an additional table 'region_data_gdp' which contains the reference values for GDP or GDP.
+We check the imputation of values in the GDP index:
+
+```{r NAs y gdp, echo=TRUE, message=FALSE, warning=FALSE}
+# Comprobamos que los países salvo 'organizaciones y otros' tiene todos los valores asignados en la columna 'gdp_index'
+
+# Analizamos la nueva columna 'region' en busca de blancos y NA
+na_rows <- is.na(pra1$gdp_index) & pra1$region != "Organizaciones y otros"
+
+# Buscamos blank
+blank_rows <- (pra1$gdp_index == "" & pra1$region != "Organizaciones y otros")
+
+# Vemos las filas donde 'gdp_index' es NA
+print("NAs")
+pra1[na_rows,]
+
+# vemos las filas donde 'gdp_index' es blank
+print("Blancos")
+pra1[blank_rows, ]
+```
+
+We observe that it returns records of the 'OECD' which, for the moment, we are interested in keeping.
+But because of the operations, we observe complete records with 'NA' values, which in this case should be cleaned up, but which we will also do later.
+
+## Imputing missing values in "imf_index" or government spending index
+
+We will proceed in a similar manner as described before with the GDP.
+In this case, we are addressing the government spending index.
+We will impute the missing values with the mean values, taking into account that there may be few cases where the function can operate, as the IMF index is sparse in the dataset.
+
+```{r imputamos la media a imf, echo=TRUE, message=FALSE, warning=FALSE}
+
+# # Creamos una función para imputar con la media solo si los valores adyacentes no son 0, la habiamos borrado del entorno y por eso la repito:
+
+impute_with_mean <- function(x) {
+  na_loc <- is.na(x)
+  prev_val <- ifelse(is.na(lag(x)), 0, lag(x))
+  next_val <- ifelse(is.na(lead(x)), 0, lead(x))
+  x[na_loc & prev_val != 0 & next_val != 0] <- (prev_val + next_val)/2 # si los valores anterior/posterior no son = 0
+  return(x)
+}
+
+# Aplicamos la función a cada grupo de 'code'
+pra1 <- pra1 %>%
+  arrange(code, year) %>% # organizamos por code y year
+  group_by(code) %>% # agrupamos por code
+  mutate(imf_index = impute_with_mean(imf_index)) # imputa por la media si esta disponible segun los parametros de la funcion
+
+# visualizamos la tabla:
+print(pra1)
+```
+
+We have encountered a warning that we will ignore for now, as it does not affect our current process.
+We will address the remaining cases of missing values in the 'imf_index' column by creating regions to impute the missing data.
+
+```{r imf_index, echo=TRUE, message=FALSE, warning=FALSE}
+
+# Copia del dataframe
+write.csv(pra1, file= "pra1.csv")
+pra1_2 <- pra1
+
+# Agregamos una nueva columna que indique la región de cada país
+pra1 <- pra1 %>%
+  mutate(region_imf = case_when(
+    code %in% eu_countries ~ "EU",
+    code %in% other_europe_countries ~ "ACS",
+    code %in% africa_countries ~ "LMC",
+    (code %in% caribbean_countries | code %in% south_america_countries | code %in% central_america_countries) ~ "LAC",
+    code %in% asia_countries ~ "SAS",
+    code %in% oceania_countries ~ "LMC",
+    code %in% north_america_countries ~ "HIN",
+    TRUE ~ NA_character_
+  ))
+
+# Filtramos los datos de las regiones
+region_data_imf <- pra1 %>%
+  filter(code %in% c("EU", "ACS", "LMC", "LAC", "SAS", "HIN"))
+
+# Imputamos los valores faltantes en los datos de las regiones, pues IMF esta incompleto
+region_data_imf <- region_data_imf %>%
+  group_by(code) %>%
+  mutate(imf_index = ifelse(is.na(imf_index), mean(imf_index, na.rm = TRUE), imf_index))
+
+# Unimos los datos de las regiones a los datos de los países
+pra1 <- pra1 %>%
+  left_join(region_data_imf, by = c("region_imf" = "code", "year"), suffix = c("", "_region"))
+
+# Imputamos los valores faltantes de 'imf_index' utilizando los valores de las regiones
+pra1 <- pra1 %>% mutate(imf_index = ifelse(is.na(imf_index), imf_index_region, imf_index))
+
+# renombramos columnas en pra1
+pra1 <- pra1 %>%  rename(entity_global_imf = entity_region)
+pra1 <- pra1 %>%  rename(imf_global = imf_index_region)
+
+# Eliminamos lo que no necesitamos en la tabla 'pra1':
+pra1 <- select(pra1, -matches("_region"))
+
+# Nos quedamos con lo que necesitamos en la tabla 'region_data_imf':
+region_data_imf <- select(region_data_imf, entity, code, year, imf_index)
+
+# visualizamos la tabla pra1
+print(pra1)
+
+# visualizamos las variables
+names(pra1)
+
+#visualizamos la tabla region_data_gdp
+print(region_data_imf)
+```
+
+It looks like we are now up to the fifth column corrected.
+Let's proceed with the sixth.
+The 'UHC' index reflecting compliance and adherence to labour laws:
+
+## Imputing missing values in the variable 'UHC' or basic health coverage.
+
+Essential health coverage or essential health services is key to the claims of this company, as the lack of a good health care system would call into question the establishment in a new market.
+
+The 'UHC' index is quite scarce in the registers, only some regions have these values specified, so we will proceed to impute according to the regions and subsequently, we will impute the missing values, so we will reverse the order in comparison with previously imputed indices:
+
+```{r uhc_index, echo=TRUE, message=FALSE, warning=FALSE}
+
+# Copia del dataframe
+write.csv(pra1, file= "pra1.csv")
+pra1_2 <- pra1
+
+
+# Agregamos una nueva columna que indique la región de cada país y creacion de nueva columna
+pra1 <- pra1 %>%
+  mutate(region_uhc = case_when(
+    code %in% eu_countries ~ "EUR",
+    code %in% other_europe_countries ~ "WRL",
+    code %in% africa_countries ~ "AFR",
+    code %in% caribbean_countries ~ "LWC", 
+    code %in% central_america_countries ~ "LWC",
+    code %in% south_america_countries ~ "LMC", 
+    code %in% asia_countries ~ "ASI",
+    code %in% oceania_countries ~ "OCE",
+    code %in% north_america_countries ~ "HIC",
+    TRUE ~ "Imputado"
+  ))
+
+# Filtramos los datos de las regiones
+region_data_uhc <- pra1 %>%
+  filter(code %in% c("EUR", "WRL", "AFR", "LWC", "LMC", "ASI", "OCE", "HIC"))
+
+# Imputamos los valores faltantes en los datos de las regiones, pues UHC esta incompleto
+region_data_uhc <- region_data_uhc %>%
+  group_by(code) %>%
+  mutate(uhc_index = ifelse(is.na(uhc_index), mean(uhc_index, na.rm = TRUE), imf_index))
+
+# Unimos los datos de las regiones a los datos de los países
+pra1 <- pra1 %>%
+  left_join(region_data_uhc, by = c("region_uhc" = "code", "year"), suffix = c("", "_region"))
+
+# Imputamos los valores faltantes de 'uhc_index' utilizando los valores de las regiones
+pra1 <- pra1 %>% mutate(uhc_index = ifelse(is.na(uhc_index), uhc_index_region, uhc_index))
+
+# renombramos columnas en pra1
+pra1 <- pra1 %>%  rename(entity_global_uhc = entity_region)
+pra1 <- pra1 %>%  rename(uhc_global = uhc_index_region)
+
+# Eliminamos lo que no necesitamos en la tabla 'pra1':
+pra1 <- select(pra1, -matches("_region"))
+
+# Nos quedamos con lo que necesitamos en la tabla 'region_data_uhc':
+region_data_uhc <- select(region_data_uhc, entity, code, year, uhc_index)
+
+# visualizamos la tabla pra1
+print(pra1)
+
+# visualizamos las variables
+names(pra1)
+
+#visualizamos la tabla region_data_gdp
+print(region_data_uhc)
+```
+
+The operations, in general, seem to have been correct but 'NAs' remain in several columns.
+Let us impute values to the mean:
+
+```{r imputamos la media a UHC, echo=TRUE, message=FALSE, warning=FALSE}
+
+# Modificamos la función para imputar con la media solo si los valores adyacentes no son NA, y luego con la media de todos los valores no NA o 0 si aún quedan NA
+
+impute_with_mean <- function(x) {
+  # Consideramos los valores exactamente 0 como NA
+  x[x == 0] <- NA
+
+  na_loc <- is.na(x)
+  prev_val <- lag(x)
+  next_val <- lead(x)
+  x[na_loc] <- (prev_val + next_val)/2 # si los valores anterior/posterior son no NA
+
+  # Si aún quedan NA, imputamos con la media de todos los valores no NA
+  if(any(is.na(x))){
+    x[is.na(x)] <- mean(x, na.rm = TRUE)
+  }
+  return(x)
+}
+
+# Aplicamos la función a cada grupo de 'code'
+pra1 <- pra1 %>%
+  arrange(code, year) %>% # organizamos por code y year
+  group_by(code) %>% # agrupamos por code
+  mutate(uhc_index = impute_with_mean(uhc_index)) # imputa por la media si esta disponible segun los parametros de la funcion
+
+# Aplicamos la función a cada grupo de 'code' en region_data_uhc
+region_data_uhc <- region_data_uhc %>%
+  arrange(code, year) %>% # organizamos por code y year
+  group_by(code) %>% # agrupamos por code
+  mutate(uhc_index = impute_with_mean(uhc_index)) # imputa por la media si esta disponible segun los parametros de la funcion
+
+
+# visualizamos la tabla:
+print(pra1)
+```
+
+Have had quite a few imputations due to averaging.
+Some columns derived from 'uhc_index' such as 'uhc_global' are not going to be needed, so we did some clean-up:
+
+```{r limpieza uhc, echo=TRUE, message=FALSE, warning=FALSE}
+
+# Limpiamos las columnas innecesarias en este caso de UHC
+
+pra1 <- subset(pra1, select = -uhc_global )
+```
+
+We have had quite a few imputations for the average.
+We proceed with the next column.
+
+## Imputing missing values in the column 'bci_index' or business confidence index.
+
+The business confidence index can be an indicator of whether the right conditions exist to invest in a country.
+
+```{r imputamos la media a bci, echo=TRUE, message=FALSE, warning=FALSE}
+
+# Aplicamos la función a cada grupo de 'code'
+pra1 <- pra1 %>%
+  arrange(code, year) %>% # organizamos por code y year
+  group_by(code) %>% # agrupamos por code
+  mutate(bci_index = impute_with_mean(bci_index)) # imputa por la media si esta disponible segun los parametros de la funcion
+
+# visualizamos la tabla:
+print(pra1)
+```
+
+The business confidence index is a very scarce commodity as can be seen, we will complete the index by turning once again to the broader territorial and supra-organisations.
+
+```{r bci_index, echo=TRUE, message=FALSE, warning=FALSE}
+
+# Copia del dataframe
+write.csv(pra1, file= "pra1.csv")
+pra1_2 <- pra1
+
+# Creamos un nuevo grupo de paises de la OCDE:
+ocde_countries <- unique(c("AUS", "AUT", "BEL", "CAN", "CHL", "COL", "CZE", "DNK", "EST", "FIN", "FRA", "DEU", "GRC", "HUN", "ISL", "IRL", "ISR", "ITA", "JPN", "KOR", "LVA", "LTU", "LUX", "MEX", "NLD", "NZL", "NOR", "POL", "PRT", "SVK", "SVN", "ESP", "SWE", "CHE", "TUR", "GBR", "USA"))
+
+# Agregamos una nueva columna que indique la región de cada país
+pra1 <- pra1 %>%
+  mutate(region_bci = case_when(
+    code %in% eu_countries ~ "E20",
+    code %in% ocde_countries ~ "OCD",
+    TRUE ~ "No OCDE"
+  ))
+
+# Filtramos los datos de las regiones
+region_data_bci <- pra1 %>%
+  filter(code %in% c("E20", "OCD"))
+
+# Imputamos los valores faltantes en los datos de las regiones, pues BCI esta incompleto
+region_data_bci <- region_data_bci %>%
+  group_by(code) %>%
+  mutate(bci_index = ifelse(is.na(bci_index), mean(bci_index, na.rm = TRUE), bci_index))
+
+# Unimos los datos de las regiones a los datos de los países
+pra1 <- pra1 %>%
+  left_join(region_data_bci, by = c("region_bci" = "code", "year"), suffix = c("", "_region"))
+
+# Imputamos los valores faltantes de 'bci_index' utilizando los valores de las regiones
+pra1 <- pra1 %>% mutate(bci_index = ifelse(is.na(bci_index), bci_index_region, bci_index))
+
+# Asigna 45.0 a los países que no están en ocde_countries o eu_countries
+pra1 <- pra1 %>% mutate(bci_index = ifelse(is.na(bci_index), 45.0, bci_index))
+
+# renombramos columnas en pra1
+pra1 <- pra1 %>%  rename(entity_global_bci = entity_region)
+pra1 <- pra1 %>%  rename(bci_global = bci_index_region)
+
+# Eliminamos lo que no necesitamos en la tabla 'pra1':
+pra1 <- select(pra1, -matches("_region"))
+
+# Nos quedamos con lo que necesitamos en la tabla 'region_data_bci':
+region_data_bci <- select(region_data_bci, entity, code, year, bci_index)
+
+# visualizamos la tabla pra1
+print(pra1)
+
+# visualizamos las variables
+names(pra1)
+
+#visualizamos la tabla region_data_bci
+print(region_data_bci)
+```
+
+Countries for which there is no BCI index would be considered by default under a 'negative outlook' according to the BCI index itself, as nothing is as negative as a lack of business information.
+
+We proceed to remove unnecessary columns for the BCI index:
+
+```{r limpieza bci, echo=TRUE, message=FALSE, warning=FALSE}
+
+# Limpiamos las columnas innecesarias de la tabla pra1
+
+pra1 <- subset(pra1, select = -bci_global)
+
+pra1 <- subset(pra1, select = -entity_global_bci)
+```
+
+Proceeding with the next variable.
+
+## Imputing missing values in the 'ilo_index' column regarding respect for labor rights.
+
+The index of respect for labor rights and implementation of labor laws can be a good indicator of the quality of employees' working life, their level of commitment to their performance, and their sense of belonging to the group.
+Therefore, it is important to consider it when selecting a country where the company can expand its operations in a sustainable manner.
+
+```{r imputamos la media a ilo, echo=TRUE, message=FALSE, warning=FALSE}
+
+
+# Creamos una función para imputar con la media solo si los valores adyacentes no son 0
+impute_with_mean <- function(x) {
+  na_loc <- is.na(x)
+  prev_val <- ifelse(is.na(lag(x)), 0, lag(x))
+  next_val <- ifelse(is.na(lead(x)), 0, lead(x))
+  x[na_loc & prev_val != 0 & next_val != 0] <- (prev_val + next_val)/2 # si los valores anterior/posterior no son = 0
+  return(x)
+}
+
+# Aplicamos la función a cada grupo de 'code'
+pra1 <- pra1 %>%
+  arrange(code, year) %>% # organizamos por code y year
+  group_by(code) %>% # agrupamos por code
+  mutate(ilo_index = impute_with_mean(ilo_index)) # imputa por la media si esta disponible segun los parametros de la funcion
+
+# Analizamos la nueva columna 'region' en busca de blancos y NA
+na_rows <- is.na(pra1$ilo_index) & pra1$region != "Organizaciones y otros"
+
+# Buscamos blank
+blank_rows <- (pra1$ilo_index == "" & pra1$region != "Organizaciones y otros")
+
+# Vemos las filas donde 'ilo_index' es NA
+print("NAs")
+pra1[na_rows,]
+
+# vemos las filas donde 'ilo_index' es blank
+print("Blancos")
+pra1[blank_rows, ]
+
+```
+
+We still have quite a few countries for which we have yet to impute a value to 'ilo_index':
+
+```{r ilo_index, echo=TRUE, message=FALSE, warning=FALSE}
+
+
+# Agregamos una nueva columna que indique la región de cada país
+pra1 <- pra1 %>%
+  mutate(region_ilo = case_when(
+    code %in% eu_countries ~ "ENA",
+    code %in% other_europe_countries ~ "EUR",
+    code %in% africa_countries ~ "NAF",
+    code %in% caribbean_countries ~ "SID", 
+    code %in% south_america_countries ~ "LAC",
+    code %in% central_america_countries ~ "LDV",
+    code %in% asia_countries ~ "CSA",
+    code %in% oceania_countries ~ "OCE",
+    code %in% north_america_countries ~ "ENA",
+    TRUE ~ "Otros"
+  ))
+
+# Filtramos los datos de las regiones
+region_data_ilo <- pra1 %>%
+  filter(code %in% c("ENA", "EUR", "NAF", "SID", "LAC", "LDV", "CSA", "OCE", "ENA"))
+
+# Unimos los datos de las regiones a los datos de los países
+pra1 <- pra1 %>%
+  left_join(region_data_ilo, by = c("region_ilo" = "code", "year"), suffix = c("", "_region"))
+
+# Imputamos los valores faltantes de 'ilo_index' utilizando los valores de las regiones
+pra1 <- pra1 %>%
+  mutate(ilo_index = ifelse(is.na(ilo_index), ilo_index_region, ilo_index))
+
+# renombramos columnas en pra1
+pra1 <- pra1 %>%  rename(entity_global_ilo = entity_region)
+pra1 <- pra1 %>%  rename(ilo_global = ilo_index_region)
+
+# Eliminamos lo que no necesitamos en la tabla 'pra1':
+pra1 <- select(pra1, -matches("_region"))
+
+# Nos quedamos con lo que necesitamos en la tabla 'region_data_gdp':
+region_data_ilo <- select(region_data_ilo, entity, code, year, ilo_index)
+
+# visualizamos la tabla pra1
+print(pra1)
+
+# visualizamos las variables
+names(pra1)
+
+#visualizamos la tabla region_data_ilo
+print(region_data_ilo)
+```
+
+Pending final checks, we will consider it valid and proceed with the next and final variable that requires imputations:
+
+## Imputing values in the 'phy_index' index of healthcare personnel density per thousand inhabitants.
+
+The 'phy_index' index refers to the density of healthcare personnel in the population per thousand inhabitants.
+We will proceed with imputations using the mean of the missing values:
+
+```{r imputamos la media a phy, echo=TRUE, message=FALSE, warning=FALSE}
+
+
+# Aplicamos la función previamente creada para aplicar a cada grupo de 'code'
+pra1 <- pra1 %>%
+  arrange(code, year) %>% # organizamos por code y year
+  group_by(code) %>% # agrupamos por code
+  mutate(phy_index = impute_with_mean(phy_index)) # imputa por la media si esta disponible segun los parametros de la funcion
+
+# Analizamos la nueva columna 'region' en busca de blancos y NA
+na_rows <- is.na(pra1$phy_index) & pra1$region != "Organizaciones y otros"
+
+# Buscamos blank
+blank_rows <- (pra1$phy_index == "" & pra1$region != "Organizaciones y otros")
+
+# Vemos las filas donde 'phy_index' es NA
+print("NAs")
+pra1[na_rows,]
+
+# vemos las filas donde 'phy_index' es blank
+print("Blancos")
+pra1[blank_rows, ]
+```
+
+The problem arises because in this case we only have data for a single year.
+Therefore, using the function, we will fill in the missing values.
+We will have to consider later the limitations of this index.
+
+```{r fill en phy, echo=TRUE, message=FALSE, warning=FALSE}
+
+library(tidyverse)
+
+# Propagamos el ultimo valor que no sea NA hacia adelante para cada grupo de 'code'
+pra1 <- pra1 %>%
+  arrange(code, year) %>% # Organizamos por code y year
+  group_by(code) %>% # Agrupamos por code
+  fill(phy_index, .direction = "down") # Propagamos el valor hacia adelante
+
+# Propagamos el ultimo valor  hacia atras para cada grupo de 'code'
+pra1 <- pra1 %>%
+  arrange(code, year) %>% # Organizamos por code y year
+  group_by(code) %>% # Agrupamos por code
+  fill(phy_index, .direction = "up") # Propagamos el valor hacia atras
+
+# Visualizamos la tabla
+print(pra1)
+```
+
+The changes have been made correctly.
+Now we will impute the data according to the regions of each country:
+
+```{r phy_index, echo=TRUE, message=FALSE, warning=FALSE}
+
+
+# Agregamos una nueva columna que indique la región de cada país
+pra1 <- pra1 %>%
+  mutate(region_phy = case_when(
+    code %in% eu_countries ~ "EU",
+    code %in% other_europe_countries ~ "ACS",
+    code %in% africa_countries ~ "LMC",
+    code %in% caribbean_countries ~ "LWC", 
+    code %in% south_america_countries ~ "LMC",
+    code %in% central_america_countries ~ "LWC",
+    code %in% asia_countries ~ "EAP",
+    code %in% oceania_countries ~ "U-I",
+    code %in% north_america_countries ~ "HIN",
+    TRUE ~ "Otros"
+  ))
+
+# Filtramos los datos de las regiones
+region_data_phy <- pra1 %>%
+  filter(code %in% c("EU", "ACS", "LMC", "LWC", "EAP", "U-I", "HIN"))
+
+# Unimos los datos de las regiones a los datos de los países
+pra1 <- pra1 %>%
+  left_join(region_data_phy, by = c("region_phy" = "code", "year"), suffix = c("", "_region"))
+
+# Imputamos los valores faltantes de 'phy_index' utilizando los valores de las regiones
+pra1 <- pra1 %>%
+  mutate(phy_index = ifelse(is.na(phy_index), phy_index_region, phy_index))
+
+# renombramos columnas en pra1
+pra1 <- pra1 %>%  rename(entity_global_phy = entity_region)
+pra1 <- pra1 %>%  rename(phy_global = phy_index_region)
+
+# Eliminamos lo que no necesitamos en la tabla 'pra1':
+pra1 <- select(pra1, -matches("_region"))
+
+# Nos quedamos con lo que necesitamos en la tabla 'region_data_gdp':
+region_data_phy <- select(region_data_phy, entity, code, year, phy_index)
+
+# visualizamos la tabla pra1
+print(pra1)
+
+# visualizamos las variables
+names(pra1)
+
+#visualizamos la tabla region_data_ilo
+print(region_data_phy)
+```
+
+It looks like the changes have been effective, but before we dive into further testing, let's remove the global records from the dataframe that we no longer need.
+
+## Cleaning up global records
+
+```{r quitando datos de regiones, echo=TRUE, message=FALSE, warning=FALSE}
+
+# Filtramos los datos que no queremos
+pra1 <- pra1 %>%
+  filter(region != "Organizaciones y otros", region != "No clasificado")
+```
+
+## Spreading population
+
+Some records for some countries in some years and in some specific cases lack information, so we are going to propagate the data:
+
+```{r propagando poblacion, echo=TRUE, message=FALSE, warning=FALSE}
+
+# Propagamos el último valor no-NA hacia adelante para cada grupo de 'code' en múltiples columnas
+pra1 <- pra1 %>%
+  arrange(code, year) %>% # Organizamos por code y year
+  group_by(code) %>% # Agrupamos por code
+  fill(u_1, u_5, u_15, u_25, btn_15_64, old_15, old_18, at_1, btn_1_4, btn_5_9, btn_10_14, btn_15_19, btn_20_29, btn_30_39, btn_40_49, btn_50_59, btn_60_69, btn_70_79, btn_80_89, btn_90_99, old_100, population, .direction = "down") # Propagamos el valor hacia adelante
+
+# Propagamos el último valor no-NA hacia atrás para cada grupo de 'code' en múltiples columnas
+pra1 <- pra1 %>%
+  arrange(code, year) %>% # Organizamos por code y year
+  group_by(code) %>% # Agrupamos por code
+  fill(u_1, u_5, u_15, u_25, btn_15_64, old_15, old_18, at_1, btn_1_4, btn_5_9, btn_10_14, btn_15_19, btn_20_29, btn_30_39, btn_40_49, btn_50_59, btn_60_69, btn_70_79, btn_80_89, btn_90_99, old_100, population, .direction = "up") # Propagamos el valor hacia atrás
+```
+
+## Creating new binary variables.
+
+```{r variables binarias, echo=TRUE, message=FALSE, warning=FALSE}
+
+# Códigos ISO de los países miembros de la OPEP
+opep_countries <- c("DZA", "AGO", "GNQ", "GAB", "IRN", "IRQ", "KWT", "LBY", "NGA", "SAU", "ARE", "VEN")
+pra1$opep <- ifelse(pra1$code %in% opep_countries, 1, 0)
+
+
+# Nueva columna 'kyoto' y asigno 1 a todos los países excepto Andorra, Canadá, Sudán del Sur y Estados Unidos
+pra1$kyoto <- ifelse(pra1$code %in% c("AND", "CAN", "SSD", "USA"), 0, 1)
+
+# Creo una nueva columna OCDE, vector anteriormente agregado
+pra1 <- pra1 %>%
+  mutate(ocde = ifelse(code %in% ocde_countries, 1, 0))
+
+# Paises en conflicto 
+conflict_countries <- c("AFG", "IRQ", "SYR", "YEM", "SDN", "SSD", "SOM", "COD", "UKR", "LBY", "RUS")
+
+# Creo una nueva columna
+pra1 <- pra1 %>%
+  mutate(war = ifelse(code %in% conflict_countries, 1, 0))
+```
+
+## Final checks
+
+Checking again for infinite and blank values and other possible problems:
+
+```{r comprobaciones, echo=TRUE, message=FALSE, warning=FALSE}
+
+# Encuentra filas con al menos un NA
+na_rows <- rowSums(is.na(pra1)) > 0
+
+# Encuentra filas con al menos un blanco
+blank_rows <- rowSums(pra1 == "") > 0
+
+# Imprime las filas con al menos un NA
+print("NAs")
+print(pra1[na_rows, ])
+
+# Imprime las filas con al menos un blanco
+print("Blancos")
+print(pra1[blank_rows, ])
+```
+
+Note that we have several complete rows that are NA:
+
+```{r na, echo=TRUE, message=FALSE, warning=FALSE}
+# Limpiamos NA
+# Copia de seguridad
+pra1_2 <- pra1
+
+
+# Eliminamos las filas que contienen NA 
+pra1 <- na.omit(pra1)
+
+# Encuentra filas con al menos un NA
+na_rows <- rowSums(is.na(pra1)) > 0
+
+# Encuentra filas con al menos un blanco
+blank_rows <- rowSums(pra1 == "") > 0
+
+# Imprime las filas con al menos un NA
+print("NAs")
+print(pra1[na_rows, ])
+
+# Imprime las filas con al menos un blanco
+print("Blancos")
+print(pra1[blank_rows, ])
+
+#Visualizamos la tabla
+glimpse(pra1)
+
+```
+
+Having a dataframe containing 1408 rows or records, 51 columns and 235 groups or countries, without 'NA' or blanks, so the first part of this project is finished.
+
+# BIBLIOGRAPHY
